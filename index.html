@@ -169,6 +169,13 @@
     border-color: var(--accent); 
     box-shadow: 0 0 15px rgba(0, 242, 255, 0.4), 0 0 30px rgba(0, 242, 255, 0.1);
   }
+  .modal-error {
+    font-size: 0.78rem;
+    color: #ff3b30;
+    font-weight: bold;
+    display: none;
+  }
+  .modal-error.show { display: block; }
   .modal-actions { display: flex; gap: 10px; }
   .btn-enter {
     flex: 1;
@@ -228,7 +235,7 @@
   /* CONTAINER */
   .container { max-width: 760px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
 
-  /* HERO */
+  /* HERO WITH CRISP OPTIMIZED LIGHT SLOTS */
   .hero { padding: 110px 0 80px; border-bottom: 1px solid var(--border); }
   .hero-greeting { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
   
@@ -277,7 +284,7 @@
     text-shadow: 0 0 12px rgba(0, 242, 255, 0.4);
   }
 
-  /* SKILLS */
+  /* SKILLS & ADVANCED BLURRY GLOW HOVER */
   .skills-list { display: flex; flex-direction: column; gap: 24px; }
   .skill-item { 
     display: flex; 
@@ -349,7 +356,7 @@
     margin-top: 4px;
   }
 
-  /* PROJECTS */
+  /* PROJECTS DEEP VOID HOVER WITH EXTENDED GLOW FIELDS */
   .projects-grid { display: flex; flex-direction: column; gap: 32px; }
   .project-card { 
     background: var(--card-bg); 
@@ -380,7 +387,6 @@
     position: relative;
     overflow: hidden;
     transition: border-color 0.4s;
-    padding-top: 45px;
   }
   .project-card:hover .project-media {
     border-color: rgba(0, 242, 255, 0.6);
@@ -445,38 +451,28 @@
     color: rgba(0, 162, 255, 0.3);
     transition: color 0.3s;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
   .project-card:hover .media-empty-visitor { color: var(--accent); }
   .media-empty-visitor svg { width: 44px; height: 44px; filter: drop-shadow(0 0 6px rgba(0,162,255,0.2)); }
   .media-empty-visitor span { font-size: 0.85rem; font-weight: 400; }
   .project-media.has-media .media-empty-visitor { display: none; }
 
-  /* COMPACT TOP MEDIA INPUT CONTAINER */
+  /* Upload overlay */
   .upload-overlay {
     display: none;
     position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(3, 7, 18, 0.85);
-    border: 1px solid var(--accent);
-    padding: 6px 12px;
-    border-radius: 6px;
+    inset: 0;
+    background: rgba(0, 242, 255, 0.05);
+    border: 2px dashed var(--accent);
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
-    z-index: 15;
-    transition: all 0.2s;
-    color: var(--accent);
+    z-index: 5;
+    transition: background 0.2s;
   }
-  .upload-overlay:hover { 
-    background: var(--accent); 
-    color: #000; 
-    box-shadow: 0 0 10px var(--accent-glow);
-  }
+  .upload-overlay:hover { background: rgba(0, 242, 255, 0.12); }
   .upload-overlay input[type="file"] {
     position: absolute;
     inset: 0;
@@ -485,36 +481,24 @@
     width: 100%;
     height: 100%;
   }
-  .upload-overlay-hint { 
-    font-size: 0.75rem; 
-    color: inherit; 
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 600;
-  }
+  .upload-overlay-hint { font-size: 0.78rem; color: var(--accent); pointer-events: none; text-align: center; }
+  .upload-overlay-hint strong { display: block; margin-bottom: 2px; font-size: 0.85rem; }
   
-  /* TEXTUAL CLEAR BUTTON */
   .clear-btn {
-    display: none;
     position: absolute;
-    top: 12px;
-    left: 115px;
-    background: rgba(255, 59, 48, 0.15);
-    border: 1px solid #ff3b30;
-    color: #ff3b30;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    top: 12px; right: 12px;
+    background: rgba(0, 242, 255, 0.9);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 28px; height: 28px;
+    font-size: 0.8rem;
+    font-weight: bold;
     cursor: pointer;
+    display: none;
     align-items: center;
     justify-content: center;
-    z-index: 15;
-    font-family: 'Times New Roman', Times, serif;
-    transition: all 0.2s;
-  }
-  .clear-btn:hover {
-    background: #ff3b30;
-    color: #fff;
+    z-index: 10;
   }
 
   .admin-only-btn {
@@ -586,7 +570,7 @@
   .project-note { font-size: 0.95rem; color: #cbd5e1; line-height: 1.7; }
   .project-note.hidden-desc { display: none !important; }
 
-  /* CONTACT */
+  /* CONTACT DEEP BLURRY GLOW HOVER STYLES */
   .contact-links { display: flex; flex-direction: column; gap: 16px; }
   .contact-row {
     display: flex; align-items: center; gap: 16px;
@@ -604,7 +588,7 @@
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 162, 255, 0.4), 0 0 70px rgba(0, 162, 255, 0.2);
     background: rgba(4, 10, 24, 0.9);
   }
-  .contact-row-icon { width: 44px; height: 44px; background: rgba(0, 242, 255, 0.05); border-radius: 8px; display: flex; align-items: center; center; color: var(--accent); flex-shrink: 0; transition: all 0.2s; }
+  .contact-row-icon { width: 44px; height: 44px; background: rgba(0, 242, 255, 0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; transition: all 0.2s; }
   .contact-row:hover .contact-row-icon { background: var(--accent); color: #000; filter: drop-shadow(0 0 12px var(--accent)) drop-shadow(0 0 25px rgba(0, 242, 255, 0.6)); }
   .contact-row-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; }
   .contact-row:hover .contact-row-label { color: #fff; }
@@ -685,6 +669,7 @@
     <div class="modal-title">Admin Access</div>
     <p class="modal-sub">Enter your password to unlock full customization options.</p>
     <input type="password" id="passwordInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <div class="modal-error" id="modalError">Incorrect password. Try again.</div>
     <div class="modal-actions">
       <button class="btn-enter" onclick="checkPassword()">Unlock</button>
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -798,26 +783,26 @@
             <span>No project media uploaded</span>
           </div>
           <div class="project-media-list">
-            <div class="media-item-wrapper"><img src="911.9.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-1')">✕</button></div>
-            <div class="media-item-wrapper"><img src="911.bip.11.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-1')">✕</button></div>
-            <div class="media-item-wrapper"><img src="911.bip.13.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-1')">✕</button></div>
-            <div class="media-item-wrapper"><img src="photo-collage1.png"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-1')">✕</button></div>
+            <div class="media-item-wrapper"><img src="911.9.jpg" alt="Porsche Side View"></div>
+            <div class="media-item-wrapper"><img src="911.bip.11.jpg" alt="Porsche Top Wireframe View"></div>
+            <div class="media-item-wrapper"><img src="911.bip.13.jpg" alt="Porsche Isometric View"></div>
+            <div class="media-item-wrapper"><img src="photo-collage1.png" alt="Porsche Render Collage"></div>
           </div>
           <div class="upload-overlay">
             <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-1')"/>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <span class="upload-overlay-hint">Add Media</span>
+            <div class="upload-overlay-hint"><strong>Click to upload</strong>Photos and render videos</div>
           </div>
-          <button class="clear-btn" onclick="clearMedia(event,'media-1')">Clear All</button>
+          <button class="clear-btn" onclick="clearMedia(event,'media-1')">✕</button>
         </div>
         <div class="project-body">
           <div class="project-num">Project 01</div>
-          <div class="project-title-text">Porsche 911</div>
-          <div class="project-note hidden-desc">Add a short description of what you built or designed.</div>
+          <div class="project-title-text">Porsche 911 GT3 RS Body Design</div>
+          <div class="project-note">A complete exterior aerodynamic surface modeling project of the iconic Porsche 911 GT3 RS. Modeled meticulously to capture aggressive racing contours, side vents, and performance proportions using SolidWorks Advanced Surfacing features.</div>
         </div>
       </div>
 
@@ -836,28 +821,28 @@
             <span>No project media uploaded</span>
           </div>
           <div class="project-media-list">
-            <div class="media-item-wrapper"><img src="helmet.5.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
-            <div class="media-item-wrapper"><img src="helmet.6.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
-            <div class="media-item-wrapper"><img src="helmet.7.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
-            <div class="media-item-wrapper"><img src="helmet.8.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
-            <div class="media-item-wrapper"><img src="untitled.2.jpg"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
-            <div class="media-item-wrapper"><img src="photo-collage2.png"><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-2')">✕</button></div>
+            <div class="media-item-wrapper"><img src="helmet.5.jpg" alt="F1 Helmet Perspective Render"></div>
+            <div class="media-item-wrapper"><img src="helmet.6.jpg" alt="F1 Helmet Front Orthographic"></div>
+            <div class="media-item-wrapper"><img src="helmet.7.jpg" alt="F1 Helmet Right Profile"></div>
+            <div class="media-item-wrapper"><img src="helmet.8.jpg" alt="F1 Helmet Aerodynamic Winglet Detail"></div>
+            <div class="media-item-wrapper"><img src="untitled.2.jpg" alt="F1 Helmet Exploded Assembly Concept"></div>
+            <div class="media-item-wrapper"><img src="photo-collage2.png" alt="F1 Helmet Media Collage"></div>
           </div>
           <div class="upload-overlay">
             <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-2')"/>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <span class="upload-overlay-hint">Add Media</span>
+            <div class="upload-overlay-hint"><strong>Click to upload</strong>Photos and render videos</div>
           </div>
-          <button class="clear-btn" onclick="clearMedia(event,'media-2')">Clear All</button>
+          <button class="clear-btn" onclick="clearMedia(event,'media-2')">✕</button>
         </div>
         <div class="project-body">
           <div class="project-num">Project 02</div>
-          <div class="project-title-text">F1 Racecar Helmet</div>
-          <div class="project-note hidden-desc">Add a short description of what you built or designed.</div>
+          <div class="project-title-text">Formula 1 Aerodynamic Helmet</div>
+          <div class="project-note">An advanced structural design of an ergonomic Formula 1 driver helmet. Focus areas include optimizing high-velocity drag configurations, managing multi-shell impact-absorption surfaces, and designing customized air ventilation pathways.</div>
         </div>
       </div>
 
@@ -876,23 +861,25 @@
             <span>No project media uploaded</span>
           </div>
           <div class="project-media-list">
-            <div class="media-item-wrapper"><video src="Assem1.mp4" muted loop playsinline></video><button class="remove-media-btn" onclick="removeSingleMedia(e, this, 'media-3')">✕</button></div>
+            <div class="media-item-wrapper">
+              <video src="Assem1.mp4" muted loop playsinline></video>
+            </div>
           </div>
           <div class="upload-overlay">
             <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-3')"/>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <span class="upload-overlay-hint">Add Media</span>
+            <div class="upload-overlay-hint"><strong>Click to upload</strong>Photos and render videos</div>
           </div>
-          <button class="clear-btn" onclick="clearMedia(event,'media-3')">Clear All</button>
+          <button class="clear-btn" onclick="clearMedia(event,'media-3')">✕</button>
         </div>
         <div class="project-body">
           <div class="project-num">Project 03</div>
-          <div class="project-title-text">V6 Engine</div>
-          <div class="project-note hidden-desc">Add a short description of what you built or designed.</div>
+          <div class="project-title-text">V6 Engine Block Assembly</div>
+          <div class="project-note">A comprehensive mechanical engineering project involving the full internal components layout of a V6 engine block. Features custom assembly motion linkages, structural validation analysis, and high-fidelity mechanism animations.</div>
         </div>
       </div>
 
@@ -963,14 +950,14 @@
 
     <button class="admin-only-btn" onclick="addSocialSlot()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
-        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
       </svg>
       Add alternative contact / social platform
     </button>
 
     <button class="admin-only-btn" onclick="addMobileSlot()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1 2 1.72z"/>
       </svg>
       Add mobile number slot
     </button>
@@ -993,6 +980,7 @@
     if (isAdmin) { logout(); return; }
     document.getElementById('adminModal').classList.add('open');
     document.getElementById('passwordInput').value = '';
+    document.getElementById('modalError').classList.remove('show');
     setTimeout(() => document.getElementById('passwordInput').focus(), 100);
   }
   
@@ -1006,7 +994,9 @@
       closeModal();
       enableAdmin();
     } else {
-      closeModal();
+      document.getElementById('modalError').classList.add('show');
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('passwordInput').focus();
     }
   }
 
@@ -1153,7 +1143,7 @@
   }
 
   function removeSingleMedia(e, btn, mediaId) {
-    if(e) e.stopPropagation();
+    e.stopPropagation();
     const wrapper = btn.closest('.media-item-wrapper');
     const mediaEl = document.getElementById(mediaId);
     if (wrapper) {
@@ -1201,13 +1191,13 @@
   }
 
   function addSkillSlot() {
-    const skillName = prompt("Enter Skill Name:", "New Skill");
+    const skillName = prompt("Enter Skill Name (e.g., Fusion 360):", "New Skill");
     if(!skillName) return;
     const levelPercentage = prompt("Enter progress level (0 to 100):", "75");
     if(!levelPercentage) return;
-    const proficiencyStr = prompt("Enter Proficiency text:", "Advanced");
+    const proficiencyStr = prompt("Enter Proficiency text (e.g., Expert):", "Advanced");
     if(!proficiencyStr) return;
-    const specialtiesStr = prompt("Enter Specialized Fields:", "Specialized in: Surface Modeling");
+    const specialtiesStr = prompt("Enter Specialized Fields / Parts of skill:", "Specialized in: Surface Modeling, Component Optimization");
     if(!specialtiesStr) return;
 
     const grid = document.getElementById('skillsGrid');
@@ -1252,14 +1242,14 @@
         <div class="project-media-list"></div>
         <div class="upload-overlay">
           <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'${mid}')"/>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="17 8 12 3 7 8"/>
             <line x1="12" y1="3" x2="12" y2="15"/>
           </svg>
-          <span class="upload-overlay-hint">Add Media</span>
+          <div class="upload-overlay-hint"><strong>Click to upload</strong>Photos and render videos</div>
         </div>
-        <button class="clear-btn" onclick="clearMedia(event,'${mid}')">Clear All</button>
+        <button class="clear-btn" onclick="clearMedia(event,'${mid}')">✕</button>
       </div>
       <div class="project-body">
         <div class="project-num">Project ${String(n).padStart(2,'0')}</div>
@@ -1272,11 +1262,11 @@
   }
 
   function addSocialSlot() {
-    const platformLabel = prompt("Enter Platform Label Name:");
+    const platformLabel = prompt("Enter Social/Contact Platform Label Name (e.g., GitHub, Twitter):");
     if(!platformLabel) return;
-    const platformValue = prompt("Enter Display Handle / Description:");
+    const platformValue = prompt("Enter Display Handle / Link Description text:");
     if(!platformValue) return;
-    const linkUrl = prompt("Enter target redirection URL:", "https://");
+    const linkUrl = prompt("Enter target web redirection destination URL:", "https://");
     if(!linkUrl) return;
 
     const container = document.getElementById('contactLinksGrid');
@@ -1291,7 +1281,9 @@
       </div>
       <div class="contact-row-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
         </svg>
       </div>
       <div>
@@ -1303,9 +1295,9 @@
   }
 
   function addMobileSlot() {
-    const mobileLabel = prompt("Enter Mobile Label Name:", "Mobile");
+    const mobileLabel = prompt("Enter Mobile Label Name (e.g., Mobile, WhatsApp, Phone):", "Mobile");
     if(!mobileLabel) return;
-    const mobileNumber = prompt("Enter Mobile Number:");
+    const mobileNumber = prompt("Enter Mobile Number (e.g., +8801717xxxxxx):");
     if(!mobileNumber) return;
 
     const container = document.getElementById('contactLinksGrid');
