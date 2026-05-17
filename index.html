@@ -392,7 +392,6 @@
     border-color: rgba(0, 242, 255, 0.6);
   }
 
-  /* MULTIPLE MEDIA GALLERY STYLING */
   .project-media-list {
     display: flex;
     flex-wrap: wrap;
@@ -773,7 +772,7 @@
           <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
           <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
         </div>
-        <div class="project-media has-media" id="media-1">
+        <div class="project-media" id="media-1">
           <div class="media-empty-visitor">
             <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
               <rect x="6" y="10" width="28" height="22" rx="3"/>
@@ -782,12 +781,7 @@
             </svg>
             <span>No project media uploaded</span>
           </div>
-          <div class="project-media-list">
-            <div class="media-item-wrapper"><img src="911.9.jpg" alt="Porsche Side View"></div>
-            <div class="media-item-wrapper"><img src="911.bip.11.jpg" alt="Porsche Top Wireframe View"></div>
-            <div class="media-item-wrapper"><img src="911.bip.13.jpg" alt="Porsche Isometric View"></div>
-            <div class="media-item-wrapper"><img src="photo-collage1.png" alt="Porsche Render Collage"></div>
-          </div>
+          <div class="project-media-list"></div>
           <div class="upload-overlay">
             <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-1')"/>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
@@ -801,8 +795,8 @@
         </div>
         <div class="project-body">
           <div class="project-num">Project 01</div>
-          <div class="project-title-text">Porsche 911 GT3 RS Body Design</div>
-          <div class="project-note">A complete exterior aerodynamic surface modeling project of the iconic Porsche 911 GT3 RS. Modeled meticulously to capture aggressive racing contours, side vents, and performance proportions using SolidWorks Advanced Surfacing features.</div>
+          <div class="project-title-text">F1 Racecar helmet</div>
+          <div class="project-note hidden-desc"></div>
         </div>
       </div>
 
@@ -821,12 +815,10 @@
             <span>No project media uploaded</span>
           </div>
           <div class="project-media-list">
-            <div class="media-item-wrapper"><img src="helmet.5.jpg" alt="F1 Helmet Perspective Render"></div>
-            <div class="media-item-wrapper"><img src="helmet.6.jpg" alt="F1 Helmet Front Orthographic"></div>
-            <div class="media-item-wrapper"><img src="helmet.7.jpg" alt="F1 Helmet Right Profile"></div>
-            <div class="media-item-wrapper"><img src="helmet.8.jpg" alt="F1 Helmet Aerodynamic Winglet Detail"></div>
-            <div class="media-item-wrapper"><img src="untitled.2.jpg" alt="F1 Helmet Exploded Assembly Concept"></div>
-            <div class="media-item-wrapper"><img src="photo-collage2.png" alt="F1 Helmet Media Collage"></div>
+            <div class="media-item-wrapper">
+              <video src="main.mp4" muted loop playsinline></video>
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
           </div>
           <div class="upload-overlay">
             <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-2')"/>
@@ -841,45 +833,8 @@
         </div>
         <div class="project-body">
           <div class="project-num">Project 02</div>
-          <div class="project-title-text">Formula 1 Aerodynamic Helmet</div>
-          <div class="project-note">An advanced structural design of an ergonomic Formula 1 driver helmet. Focus areas include optimizing high-velocity drag configurations, managing multi-shell impact-absorption surfaces, and designing customized air ventilation pathways.</div>
-        </div>
-      </div>
-
-      <div class="project-card" onclick="openLightbox(this)">
-        <div class="admin-controls-cluster">
-          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
-          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
-        </div>
-        <div class="project-media has-media" id="media-3">
-          <div class="media-empty-visitor">
-            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
-              <rect x="6" y="10" width="28" height="22" rx="3"/>
-              <path d="M6 26l8-7 6 5 4-4 10 8"/>
-              <circle cx="27" cy="17" r="3"/>
-            </svg>
-            <span>No project media uploaded</span>
-          </div>
-          <div class="project-media-list">
-            <div class="media-item-wrapper">
-              <video src="Assem1.mp4" muted loop playsinline></video>
-            </div>
-          </div>
-          <div class="upload-overlay">
-            <input type="file" accept="image/*,video/*" multiple onclick="event.stopPropagation()" onchange="handleMedia(this,'media-3')"/>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            <div class="upload-overlay-hint"><strong>Click to upload</strong>Photos and render videos</div>
-          </div>
-          <button class="clear-btn" onclick="clearMedia(event,'media-3')">✕</button>
-        </div>
-        <div class="project-body">
-          <div class="project-num">Project 03</div>
-          <div class="project-title-text">V6 Engine Block Assembly</div>
-          <div class="project-note">A comprehensive mechanical engineering project involving the full internal components layout of a V6 engine block. Features custom assembly motion linkages, structural validation analysis, and high-fidelity mechanism animations.</div>
+          <div class="project-title-text">mechanical counter</div>
+          <div class="project-note hidden-desc"></div>
         </div>
       </div>
 
@@ -970,7 +925,7 @@
 <script>
   const ADMIN_PASS = '01717188298adi';
   let isAdmin = false;
-  let projectCount = 3;
+  let projectCount = 2; // Incremented default count to 2
 
   function goTo(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
@@ -1069,12 +1024,12 @@
       if (item.tagName.toLowerCase() === 'img') {
         const img = document.createElement('img');
         img.className = 'lightbox-img active';
-        img.src = item.getAttribute('src');
+        img.src = item.src;
         lContainer.appendChild(img);
       } else if (item.tagName.toLowerCase() === 'video') {
         const vid = document.createElement('video');
         vid.className = 'lightbox-vid active';
-        vid.src = item.getAttribute('src');
+        vid.src = item.getAttribute('src'); // Use structural src parameter
         vid.controls = true;
         lContainer.appendChild(vid);
       }
