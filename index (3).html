@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adibul Ajraf Abith — Portfolio</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  /* DARKER BRIGHT NEON ENGINE THEME */
+  :root {
+    --bg: #020308;
+    --card-bg: rgba(3, 7, 18, 0.75);
+    --text: #ffffff;
+    --muted: #8fa0b5;
+    --border: rgba(0, 162, 255, 0.25);
+    --accent: #00f2ff;
+    --accent-purple: #8b5cf6;
+    --accent-glow: rgba(0, 242, 255, 0.5);
+    --accent-gradient: linear-gradient(90deg, #00f2ff, #7b00ff);
+  }
+  
+  html { scroll-behavior: smooth; }
+  body {
+    background: #010205;
+    color: var(--text);
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* HIGH-CONTRAST HEAVY BLUR DEEP NEON ELEMENTS */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(0, 162, 255, 0.38) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(123, 0, 255, 0.4) 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, rgba(255, 0, 123, 0.22) 0%, transparent 35%),
+      radial-gradient(circle at 85% 15%, rgba(0, 242, 255, 0.25) 0%, transparent 30%);
+    filter: blur(140px);
+    mix-blend-mode: screen;
+    z-index: -3;
+    pointer-events: none;
+    animation: darkGlowShift 20s ease-in-out infinite alternate;
+  }
+
+  /* SUBTLE OVERLAID QUANTUM STRUCTURE */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: 
+      linear-gradient(115deg, transparent 30%, rgba(0, 242, 255, 0.06) 30.1%, rgba(0, 242, 255, 0) 30.4%),
+      radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 40px 40px;
+    mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(1, 3, 8, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 162, 255, 0.25);
+    z-index: 50;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+  .nav-btn {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #94a3b8;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+  .nav-btn:hover { 
+    color: var(--accent); 
+    text-shadow: 0 0 12px var(--accent-glow), 0 0 25px rgba(0, 242, 255, 0.8), 0 0 45px rgba(0, 242, 255, 0.4);
+  }
+
+  /* Admin toggle button */
+  .admin-toggle {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: rgba(0, 242, 255, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+    flex-shrink: 0;
+  }
+  .admin-toggle:hover { 
+    background: var(--accent); 
+    box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
+  }
+  .admin-toggle.active { 
+    background: var(--accent); 
+    box-shadow: 0 0 15px var(--accent);
+  }
+
+  /* ADMIN MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 2, 4, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #030612;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 50px rgba(0, 242, 255, 0.25);
+    border-radius: 14px;
+    padding: 36px 32px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .modal-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+  }
+  .modal-sub { font-size: 0.85rem; color: var(--muted); margin-top: -8px; }
+  .modal input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    background: #010205;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .modal input[type="password"]:focus { 
+    border-color: var(--accent); 
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4), 0 0 30px rgba(0, 242, 255, 0.1);
+  }
+  .modal-error {
+    font-size: 0.78rem;
+    color: #ff3b30;
+    font-weight: bold;
+    display: none;
+  }
+  .modal-error.show { display: block; }
+  .modal-actions { display: flex; gap: 10px; }
+  .btn-enter {
+    flex: 1;
+    padding: 10px;
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s, box-shadow 0.2s;
+  }
+  .btn-enter:hover { opacity: 0.9; box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); }
+  .btn-cancel {
+    padding: 10px 16px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-cancel:hover { border-color: #fff; color: #fff; }
+
+  /* Admin bar */
+  .admin-bar {
+    display: none;
+    background: var(--accent);
+    padding: 12px 40px;
+    font-size: 0.85rem;
+    color: #000;
+    font-weight: 600;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 25px rgba(0, 242, 255, 0.4);
+  }
+  .admin-bar.visible { display: flex; }
+  .btn-logout {
+    margin-left: auto;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border: 1px solid #000;
+    background: transparent;
+    color: #000;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    transition: background 0.2s;
+  }
+  .btn-logout:hover { background: rgba(0,0,0,0.15); }
+
+  /* CONTAINER */
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
+
+  /* HERO */
+  .hero { padding: 110px 0 80px; border-bottom: 1px solid var(--border); }
+  .hero-greeting { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+  
+  .hero-name { 
+    font-family: 'Times New Roman', Times, serif; 
+    font-size: clamp(2.5rem, 6vw, 4.5rem); 
+    line-height: 1.1; 
+    margin-bottom: 24px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ffffff; 
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    filter: drop-shadow(0 2px 20px rgba(0, 242, 255, 0.6)) drop-shadow(0 4px 40px rgba(123, 0, 255, 0.4));
+  }
+  .hero-desc { font-size: 1.1rem; color: #cbd5e1; max-width: 560px; line-height: 1.8; }
+
+  /* SECTIONS */
+  .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  
+  .section-label { 
+    font-size: 2.2rem; 
+    font-weight: 400; 
+    color: #fff; 
+    margin-bottom: 6px; 
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+  }
+  
+  .section-title { 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    letter-spacing: 0.25em; 
+    text-transform: uppercase; 
+    color: var(--accent); 
+    margin-bottom: 32px; 
+    display: block;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+  }
+
+  /* ABOUT */
+  #aboutText span.highlight {
+    color: #ffffff;
+    font-weight: 400;
+    text-shadow: 0 0 12px rgba(0, 242, 255, 0.4);
+  }
+
+  /* SKILLS */
+  .skills-list { display: flex; flex-direction: column; gap: 24px; }
+  .skill-item { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; 
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(2, 4, 12, 0.6);
+    border: 1px solid transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.15, 0.85, 0.3, 1);
+    position: relative; 
+  }
+  
+  .skill-item:hover {
+    background-color: var(--card-bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 35px rgba(0, 162, 255, 0.4), 0 0 70px rgba(0, 242, 255, 0.2), inset 0 0 15px rgba(0, 242, 255, 0.15);
+    transform: translateX(4px);
+  }
+
+  .skill-main-row { display: flex; align-items: center; gap: 20px; width: 100%; }
+  .skill-name { font-size: 1rem; color: #fff; font-weight: 400; min-width: 130px; }
+  .skill-track { flex: 1; height: 7px; background: rgba(255, 255, 255, 0.08); border-radius: 5px; overflow: hidden; }
+  
+  .skill-fill { 
+    height: 100%; 
+    background: linear-gradient(90deg, #00f2ff, #7b00ff, #ff007b, #00f2ff); 
+    background-size: 300% 100%;
+    border-radius: 5px; 
+    width: 0; 
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; 
+    box-shadow: 0 0 12px rgba(0, 242, 255, 0.6);
+    animation: premiumFlow 4s linear infinite;
+  }
+
+  @keyframes premiumFlow {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
+
+  .skill-level { font-size: 0.85rem; color: var(--accent); font-weight: 500; min-width: 80px; text-align: right; text-shadow: 0 0 8px rgba(0,242,255,0.3); }
+  
+  .skill-specialties {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-4px);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .skill-item:hover .skill-specialties {
+    opacity: 1;
+    max-height: 40px;
+    transform: translateY(0);
+    margin-top: 4px;
+    color: #e2e8f0;
+  }
+
+  body.admin-mode .skill-specialties {
+    opacity: 1 !important;
+    max-height: 80px !important;
+    transform: translateY(0) !important;
+    border-left: 2px dashed var(--accent);
+    padding-left: 8px;
+    margin-top: 4px;
+  }
+
+  /* PROJECTS */
+  .projects-grid { display: flex; flex-direction: column; gap: 32px; }
+  .project-card { 
+    background: var(--card-bg); 
+    border: 1px solid var(--border); 
+    border-radius: 14px; 
+    overflow: hidden; 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.15, 0.85, 0.3, 1); 
+    position: relative; 
+  }
+  
+  .project-card:hover { 
+    border-color: rgba(0, 242, 255, 0.8); 
+    transform: translateY(-5px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 162, 255, 0.45), 0 0 80px rgba(123, 0, 255, 0.25);
+  }
+
+  .project-media {
+    width: 100%;
+    min-height: 240px;
+    background: rgba(1, 2, 5, 0.8);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s;
+    padding-top: 45px;
+  }
+  .project-card:hover .project-media {
+    border-color: rgba(0, 242, 255, 0.6);
+  }
+
+  /* MULTIPLE MEDIA GALLERY STYLING */
+  .project-media-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 24px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .media-item-wrapper {
+    position: relative;
+    width: 140px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .media-item-wrapper img,
+  .media-item-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .remove-media-btn {
+    position: absolute;
+    top: 6px; right: 6px;
+    background: rgba(255, 59, 48, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    transition: background 0.2s;
+  }
+  .remove-media-btn:hover { background: #ff3b30; }
+  body.admin-mode .remove-media-btn { display: flex; }
+
+  .media-empty-visitor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(0, 162, 255, 0.3);
+    transition: color 0.3s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .project-card:hover .media-empty-visitor { color: var(--accent); }
+  .media-empty-visitor svg { width: 44px; height: 44px; filter: drop-shadow(0 0 6px rgba(0,162,255,0.2)); }
+  .media-empty-visitor span { font-size: 0.85rem; font-weight: 400; }
+  .project-media.has-media .media-empty-visitor { display: none; }
+
+  /* COMPACT TOP MEDIA INPUT CONTAINER */
+  .upload-overlay {
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(3, 7, 18, 0.85);
+    border: 1px solid var(--accent);
+    padding: 6px 12px;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 15;
+    transition: all 0.2s;
+    color: var(--accent);
+  }
+  .upload-overlay:hover { 
+    background: var(--accent); 
+    color: #000; 
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .upload-overlay-hint { 
+    font-size: 0.75rem; 
+    color: inherit; 
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+  }
+  
+  /* TEXTUAL CLEAR BUTTON */
+  .clear-btn {
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 130px;
+    background: rgba(255, 59, 48, 0.15);
+    border: 1px solid #ff3b30;
+    color: #ff3b30;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    font-family: 'Times New Roman', Times, serif;
+    transition: all 0.2s;
+  }
+  .clear-btn:hover {
+    background: #ff3b30;
+    color: #fff;
+  }
+
+  .admin-only-btn {
+    display: none;
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    border: 2px dashed var(--border);
+    background: transparent;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .admin-only-btn:hover { 
+    border-color: var(--accent); 
+    color: var(--accent);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3), 0 0 40px rgba(0, 242, 255, 0.1);
+  }
+
+  body.admin-mode .upload-overlay { display: flex; }
+  body.admin-mode .project-media.has-media .clear-btn { display: flex; }
+  body.admin-mode .admin-only-btn { display: flex; }
+  
+  body.admin-mode [contenteditable="true"] {
+    outline: 1px dashed var(--accent) !important;
+    padding: 4px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+  }
+
+  /* REORDER INTERFACE */
+  .admin-controls-cluster {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+    z-index: 45;
+  }
+  body.admin-mode .admin-controls-cluster { display: inline-flex; }
+
+  .delete-btn, .move-up-btn {
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    transition: background 0.2s, transform 0.1s;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+  }
+  .delete-btn { background: #ff3b30; }
+  .move-up-btn { background: #0066ff; border: 1px solid rgba(0, 242, 255, 0.3); }
+
+  .project-body { padding: 26px; }
+  .project-num { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 8px; text-shadow: 0 0 8px rgba(0, 242, 255, 0.3); }
+  .project-title-text { font-size: 1.5rem; font-weight: 500; color: #fff; margin-bottom: 10px; }
+  .project-note { font-size: 0.95rem; color: #cbd5e1; line-height: 1.7; }
+  .project-note.hidden-desc { display: none !important; }
+
+  /* CONTACT */
+  .contact-links { display: flex; flex-direction: column; gap: 16px; }
+  .contact-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 26px; background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-decoration: none; transition: all 0.3s cubic-bezier(0.15, 0.85, 0.3, 1); color: inherit;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative; 
+  }
+  
+  .contact-row:hover { 
+    border-color: var(--accent); 
+    transform: translateX(6px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 162, 255, 0.4), 0 0 70px rgba(0, 162, 255, 0.2);
+    background: rgba(4, 10, 24, 0.9);
+  }
+  .contact-row-icon { width: 44px; height: 44px; background: rgba(0, 242, 255, 0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; transition: all 0.2s; }
+  .contact-row:hover .contact-row-icon { background: var(--accent); color: #000; filter: drop-shadow(0 0 12px var(--accent)) drop-shadow(0 0 25px rgba(0, 242, 255, 0.6)); }
+  .contact-row-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; }
+  .contact-row:hover .contact-row-label { color: #fff; }
+  .contact-row-value { font-size: 1rem; color: #fff; font-weight: 400; }
+
+  /* LIGHTBOX OVERLAY */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 2, 5, 0.98);
+    backdrop-filter: blur(30px);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .lightbox-overlay.open { display: flex; }
+  .lightbox-content {
+    background: #02050f;
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0, 242, 255, 0.45);
+    display: flex;
+    flex-direction: column;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    z-index: 310;
+    transition: all 0.2s;
+  }
+  .lightbox-close:hover { background: #fff; color: #000; font-weight: bold; box-shadow: 0 0 15px #fff; }
+  
+  .lightbox-media-container { width: 100%; display: flex; flex-direction: column; background: #000; }
+  .lightbox-img, .lightbox-vid { width: 100%; height: auto; max-height: 450px; object-fit: contain; display: none; }
+  .lightbox-img.active, .lightbox-vid.active { display: block; }
+  .lightbox-media-divider { height: 1px; background: var(--border); display: none; }
+  .lightbox-media-divider.active { display: block; }
+
+  .lightbox-body { padding: 32px; }
+  .lightbox-num { font-size: 0.85rem; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 8px; text-transform: uppercase; }
+  .lightbox-title { font-size: 1.9rem; font-weight: 500; color: #fff; margin-bottom: 14px; }
+  .lightbox-desc { font-size: 1.05rem; color: #cbd5e1; line-height: 1.8; }
+
+  /* CERTIFICATES */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .cert-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.15, 0.85, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  /* Odd cards slide right, even cards slide left — like project cards */
+  .cert-card:nth-child(odd):hover {
+    border-color: rgba(0, 242, 255, 0.8);
+    transform: translateX(4px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.7), 0 0 28px rgba(0,162,255,0.4), 0 0 55px rgba(123,0,255,0.2);
+  }
+  .cert-card:nth-child(even):hover {
+    border-color: rgba(0, 242, 255, 0.8);
+    transform: translateX(-4px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.7), 0 0 28px rgba(0,162,255,0.4), 0 0 55px rgba(123,0,255,0.2);
+  }
+
+  /* Thumb area — fixed height, shows PDF canvas or image */
+  .cert-thumb {
+    width: 100%;
+    height: 130px;
+    background: rgba(1,2,5,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cert-thumb img.cert-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cert-thumb .cert-empty-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: rgba(0,162,255,0.25);
+    font-size: 0.58rem;
+    transition: color 0.2s;
+  }
+  .cert-card:hover .cert-empty-icon { color: var(--accent); }
+  .cert-thumb.has-media .cert-empty-icon { display: none; }
+
+  .cert-upload-btn {
+    display: none;
+    position: absolute;
+    bottom: 5px; right: 5px;
+    background: rgba(3,7,18,0.88);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 5px;
+    padding: 3px 7px;
+    font-size: 0.65rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 15;
+    transition: all 0.2s;
+  }
+  .cert-upload-btn:hover { background: var(--accent); color: #000; }
+  body.admin-mode .cert-upload-btn { display: flex; align-items: center; gap: 4px; }
+
+  /* Card body — title + description like project cards */
+  .cert-body {
+    padding: 10px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+  }
+  .cert-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(0,242,255,0.3);
+  }
+  .cert-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cert-desc {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    display: none;
+  }
+  /* In admin, show description field with dashed border hint */
+  body.admin-mode .cert-desc {
+    display: block;
+    border-left: 2px dashed var(--accent);
+    padding-left: 6px;
+    margin-top: 4px;
+    min-height: 18px;
+  }
+
+  /* Cert lightbox */
+  .cert-lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(1,2,5,0.98);
+    backdrop-filter: blur(30px);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .cert-lightbox-overlay.open { display: flex; }
+  .cert-lightbox-content {
+    background: #02050f;
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,242,255,0.4);
+    display: flex;
+    flex-direction: column;
+  }
+  .cert-lightbox-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    z-index: 310;
+    transition: all 0.2s;
+  }
+  .cert-lightbox-close:hover { background: #fff; color: #000; font-weight: bold; box-shadow: 0 0 15px #fff; }
+  .cert-lightbox-img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    background: #000;
+    border-radius: 14px 14px 0 0;
+  }
+  .cert-lightbox-body { padding: 22px 28px 28px; }
+  .cert-lightbox-label { font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+  .cert-lightbox-title { font-size: 1.6rem; font-weight: 500; color: #fff; margin-bottom: 10px; }
+  .cert-lightbox-desc { font-size: 1rem; color: #cbd5e1; line-height: 1.75; }
+
+  footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.15, 0.85, 0.3, 1), transform 0.8s cubic-bezier(0.15, 0.85, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 18px; }
+    .hero { padding: 70px 0 50px; }
+    .lightbox-body { padding: 20px; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <div class="modal-title">Admin Access</div>
+    <p class="modal-sub">Enter your password to unlock full customization options.</p>
+    <input type="password" id="passwordInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="modal-error" id="modalError">Incorrect password. Try again.</div>
+    <div class="modal-actions">
+      <button class="btn-enter" onclick="checkPassword()">Unlock</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-bar" id="adminBar">
+  <strong>✓ Dynamic Admin Mode Active</strong> — Rewrite content slots or trigger structural modifications below.
+  <button class="btn-logout" onclick="saveAndDownload()">Lock &amp; Save</button>
+</div>
+
+<div class="lightbox-overlay" id="projectLightbox">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-media-container" id="lightboxMediaContainer"></div>
+    <div class="lightbox-body">
+      <div class="lightbox-num" id="lightboxNum">Project 01</div>
+      <h3 class="lightbox-title" id="lightboxTitle">Project Title</h3>
+      <p class="lightbox-desc" id="lightboxDesc">Description goes here.</p>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <ul class="nav-links">
+    <li><button class="nav-btn" onclick="goTo('about')">About</button></li>
+    <li><button class="nav-btn" onclick="goTo('skills')">Skills</button></li>
+    <li><button class="nav-btn" onclick="goTo('projects')">Projects</button></li>
+    <li><button class="nav-btn" onclick="goTo('certificates')">Certificates</button></li>
+    <li><button class="nav-btn" onclick="goTo('contact')">Contact</button></li>
+    <li><button class="admin-toggle" id="adminToggle" onclick="openModal()" title="Admin Switch"></button></li>
+  </ul>
+</nav>
+
+<main class="container">
+
+  <section class="hero" id="top">
+    <div class="hero-greeting">Portfolio</div>
+    <h1 class="hero-name" id="heroName">Adibul Ajraf Abith</h1>
+    <p class="hero-desc" id="heroDesc" contenteditable="false">
+      I'm a fast learner who loves picking up new things. What draws me to CAD is
+      the ability to create anything — starting from a completely blank page.
+    </p>
+  </section>
+
+  <section class="section reveal visible" id="about">
+    <div class="section-label">About Myself</div>
+    <p id="aboutText" style="color:#cbd5e1; font-size:1.05rem; line-height:1.85; max-width:600px;" contenteditable="false">
+      I'm currently a <span class="highlight">2nd year BSc Student at Khulna University of Engineering and Technology (KUET)</span> specializing in <span class="highlight">CAD &amp; 3D Mechanical Design</span>. I have a robust interest in structural and digital optimization—I thoroughly enjoy the precise engineering loop of shifting from conceptual thoughts to a fully realized, optimized 3D component. Being an adaptive, swift learner, I continuously explore advanced development workflows and love pushing technical constraints.
+    </p>
+  </section>
+
+  <section class="section reveal visible" id="skills">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">What I work with</h2>
+    
+    <div class="skills-list" id="skillsGrid">
+      <div class="skill-item">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="skill-main-row">
+          <div class="skill-name" contenteditable="false">SolidWorks</div>
+          <div class="skill-track"><div class="skill-fill" data-width="85" style="width: 85%;"></div></div>
+          <div class="skill-level" contenteditable="false">Expert</div>
+        </div>
+        <div class="skill-specialties" contenteditable="false">Specialized in: Part Modeling, FEA Simulation, CSWIP Workflow</div>
+      </div>
+      
+      <div class="skill-item">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="skill-main-row">
+          <div class="skill-name" contenteditable="false">AutoCAD</div>
+          <div class="skill-track"><div class="skill-fill" data-width="60" style="width: 60%;"></div></div>
+          <div class="skill-level" contenteditable="false">Medium</div>
+        </div>
+        <div class="skill-specialties" contenteditable="false">Specialized in: 2D Engineering Blueprints &amp; Architectural Layouts</div>
+      </div>
+    </div>
+
+    <button class="admin-only-btn" onclick="addSkillSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add custom skill slot with specializations
+    </button>
+  </section>
+
+  <section class="section reveal visible" id="projects">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">My work</h2>
+    
+    <div class="projects-grid" id="projectsGrid">
+      
+      <div class="project-card" onclick="openLightbox(this)">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="project-media has-media" id="media-1">
+          <div class="media-empty-visitor">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+              <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+              <circle cx="27" cy="17" r="3"></circle>
+            </svg>
+            <span>No project media uploaded</span>
+          </div>
+          <div class="project-media-list">
+            <div class="media-item-wrapper">
+              <img src="911.9.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-1')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="911.bip.11.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-1')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="911.bip.13.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-1')">✕</button>
+            </div>
+          </div>
+          <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-1')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="upload-overlay-hint">Add Media Name</span>
+          </div>
+          <button class="clear-btn" onclick="clearMedia(event,'media-1')">Clear All</button>
+        </div>
+        <div class="project-body">
+          <div class="project-num">Project 01</div>
+          <div class="project-title-text" contenteditable="false">Porsche 911</div>
+          <div class="project-note hidden-desc" contenteditable="false"></div>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="openLightbox(this)">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="project-media has-media" id="media-2">
+          <div class="media-empty-visitor">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+              <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+              <circle cx="27" cy="17" r="3"></circle>
+            </svg>
+            <span>No project media uploaded</span>
+          </div>
+          <div class="project-media-list">
+            <div class="media-item-wrapper">
+              <img src="helmet.5.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="helmet.6.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="helmet.7.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="helmet.8.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
+            <div class="media-item-wrapper">
+              <img src="untitled.2.jpg">
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-2')">✕</button>
+            </div>
+          </div>
+          <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-2')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="upload-overlay-hint">Add Media Name</span>
+          </div>
+          <button class="clear-btn" onclick="clearMedia(event,'media-2')">Clear All</button>
+        </div>
+        <div class="project-body">
+          <div class="project-num">Project 02</div>
+          <div class="project-title-text" contenteditable="false">F1 Racecar Helmet</div>
+          <div class="project-note hidden-desc" contenteditable="false"></div>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="openLightbox(this)">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="project-media has-media" id="media-3">
+          <div class="media-empty-visitor">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+              <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+              <circle cx="27" cy="17" r="3"></circle>
+            </svg>
+            <span>No project media uploaded</span>
+          </div>
+          <div class="project-media-list">
+            <div class="media-item-wrapper">
+              <video src="Assem1.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-3')">✕</button>
+            </div>
+          </div>
+          <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-3')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="upload-overlay-hint">Add Media Name</span>
+          </div>
+          <button class="clear-btn" onclick="clearMedia(event,'media-3')">Clear All</button>
+        </div>
+        <div class="project-body">
+          <div class="project-num">Project 03</div>
+          <div class="project-title-text" contenteditable="false">V6 Engine</div>
+          <div class="project-note hidden-desc" contenteditable="false"></div>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="openLightbox(this)">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="project-media has-media" id="media-1779074323907">
+        <div class="media-empty-visitor">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+            <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+            <circle cx="27" cy="17" r="3"></circle>
+          </svg>
+          <span>No project media uploaded</span>
+        </div>
+        <div class="project-media-list"><div class="media-item-wrapper"><img src="Screenshot (62).jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot (63).jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot (64).jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot (65).jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot (66).jpg"><button class="remove-media-btn">✕</button></div></div>
+        <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-1779074323907')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span class="upload-overlay-hint">Add Media Name</span>
+        </div>
+        <button class="clear-btn" onclick="clearMedia(event,'media-1779074323907')">Clear All</button>
+      </div>
+      <div class="project-body">
+        <div class="project-num">Project 04</div>
+        <div class="project-title-text" contenteditable="false">Wooden Freight Lorry 1930</div>
+        <div class="project-note hidden-desc" contenteditable="false"></div>
+      </div></div><div class="project-card" onclick="openLightbox(this)">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="project-media has-media" id="media-4">
+          <div class="media-empty-visitor">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+              <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+              <circle cx="27" cy="17" r="3"></circle>
+            </svg>
+            <span>No project media uploaded</span>
+          </div>
+          <div class="project-media-list">
+            <div class="media-item-wrapper">
+              <video src="main counter.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+              <button class="remove-media-btn" onclick="removeSingleMedia(event, this, 'media-4')">✕</button>
+            </div>
+          </div>
+          <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-4')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span class="upload-overlay-hint">Add Media Name</span>
+          </div>
+          <button class="clear-btn" onclick="clearMedia(event,'media-4')">Clear All</button>
+        </div>
+        <div class="project-body">
+          <div class="project-num">Project 05</div>
+          <div class="project-title-text" contenteditable="false">Mechanical Counter</div>
+          <div class="project-note hidden-desc" contenteditable="false"></div>
+        </div>
+      </div>
+
+    <div class="project-card" onclick="openLightbox(this)">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="project-media has-media" id="media-1779074379588">
+        <div class="media-empty-visitor">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+            <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+            <circle cx="27" cy="17" r="3"></circle>
+          </svg>
+          <span>No project media uploaded</span>
+        </div>
+        <div class="project-media-list"><div class="media-item-wrapper"><img src="Screenshot 2026-04-25 000805.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-04-25 000842.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-04-25 001035.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-04-25 001042.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-05-05 175117.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-05-05 175137.jpg"><button class="remove-media-btn">✕</button></div></div>
+        <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-1779074379588')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span class="upload-overlay-hint">Add Media Name</span>
+        </div>
+        <button class="clear-btn" onclick="clearMedia(event,'media-1779074379588')">Clear All</button>
+      </div>
+      <div class="project-body">
+        <div class="project-num">Project 06</div>
+        <div class="project-title-text" contenteditable="false">Manual Walking Seed Sower</div>
+        <div class="project-note hidden-desc" contenteditable="false"></div>
+      </div></div><div class="project-card" onclick="openLightbox(this)">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="project-media has-media" id="media-1779074416507">
+        <div class="media-empty-visitor">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3"></rect>
+            <path d="M6 26l8-7 6 5 4-4 10 8"></path>
+            <circle cx="27" cy="17" r="3"></circle>
+          </svg>
+          <span>No project media uploaded</span>
+        </div>
+        <div class="project-media-list"><div class="media-item-wrapper"><img src="Screenshot 2026-05-11 185358.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-05-11 185425.jpg"><button class="remove-media-btn">✕</button></div><div class="media-item-wrapper"><img src="Screenshot 2026-05-11 185453.jpg"><button class="remove-media-btn">✕</button></div></div>
+        <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('media-1779074416507')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span class="upload-overlay-hint">Add Media Name</span>
+        </div>
+        <button class="clear-btn" onclick="clearMedia(event,'media-1779074416507')">Clear All</button>
+      </div>
+      <div class="project-body">
+        <div class="project-num">Project 07</div>
+        <div class="project-title-text" contenteditable="false">Manual Rocker Arm Punching Machine</div>
+        <div class="project-note hidden-desc" contenteditable="false"></div>
+      </div></div></div>
+
+    <button class="admin-only-btn" onclick="addProjectSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add another project slot
+    </button>
+  </section>
+
+<!-- CERTIFICATE LIGHTBOX -->
+<div class="cert-lightbox-overlay" id="certLightbox">
+  <div class="cert-lightbox-content">
+    <button class="cert-lightbox-close" onclick="closeCertLightbox()">✕</button>
+    <div id="certLightboxMedia"></div>
+    <div class="cert-lightbox-body">
+      <div class="cert-lightbox-label">Certificate</div>
+      <div class="cert-lightbox-title" id="certLightboxTitle">Certificate Title</div>
+      <p class="cert-lightbox-desc" id="certLightboxDesc"></p>
+    </div>
+  </div>
+</div>
+
+  <section class="section reveal visible" id="certificates">
+    <div class="section-label">Certificates</div>
+    <h2 class="section-title">My credentials</h2>
+
+    <div class="cert-grid" id="certsGrid">
+      <!-- Placeholder empty slot so admin can see the structure -->
+    <div class="cert-card" onclick="openCertLightbox(this)">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateCertNumbers()">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this); recalculateCertNumbers()">Delete</button>
+      </div>
+      <div class="cert-thumb has-media" id="cert-1779085892126">
+        <img class="cert-img" src="WhatsApp Image 2026-05-18 at 12.27.07 PM.jpeg"><div class="cert-empty-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3" transform="scale(0.6) translate(5,5)"></rect>
+            <circle cx="12" cy="9" r="3.5"></circle><path d="M7 20l4-5 3 3.5 2.5-3 4.5 5.5" stroke-linejoin="round"></path>
+          </svg>
+          <span>No photo</span>
+        </div>
+        <button class="cert-upload-btn" onclick="event.stopPropagation(); uploadCertFile('cert-1779085892126')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Upload Photo
+        </button>
+      </div>
+      <div class="cert-body">
+        <div class="cert-num">Cert 01</div>
+        <div class="cert-title" contenteditable="false">Calibration 2.0</div>
+        <div class="cert-desc" contenteditable="false" data-placeholder="Add a short description…">2nd Runner Up- CAD Segment</div>
+      </div>
+    </div></div>
+
+    <button class="admin-only-btn" onclick="addCertSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add certificate slot
+    </button>
+  </section>
+
+  <section class="section reveal visible" id="contact">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Get in touch</h2>
+    
+    <div class="contact-links" id="contactLinksGrid">
+
+      <a href="tel:01755935478" class="contact-row">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="contact-row-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-row-label">Mobile</div>
+          <div class="contact-row-value">01755935478</div>
+        </div>
+      </a>
+
+      <a href="mailto:aaj2428@gmail.com" class="contact-row">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="contact-row-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M2 7l10 7 10-7"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-row-label">Email</div>
+          <div class="contact-row-value">aaj2428@gmail.com</div>
+        </div>
+      </a>
+
+      <a href="https://www.linkedin.com/in/adibul-ajraf-abith-675589396/" target="_blank" class="contact-row">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="contact-row-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-row-label">LinkedIn</div>
+          <div class="contact-row-value">adibul-ajraf-abith</div>
+        </div>
+      </a>
+
+      <a href="https://www.facebook.com/adibul.ajraf" target="_blank" class="contact-row">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+        </div>
+        <div class="contact-row-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-row-label">Facebook</div>
+          <div class="contact-row-value">adibul.ajraf</div>
+        </div>
+      </a>
+    </div>
+
+    <button class="admin-only-btn" onclick="addSocialSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add alternative contact / social platform
+    </button>
+
+    <button class="admin-only-btn" onclick="addMobileSlot()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+      Add mobile number slot
+    </button>
+  </section>
+
+</main>
+
+<footer></footer>
+
+<script>
+  const ADMIN_PASS = '01717188298adi';
+  let isAdmin = false;
+
+  function goTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function openModal() {
+    if (isAdmin) { logout(); return; }
+    document.getElementById('adminModal').classList.add('open');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('modalError').classList.remove('show');
+    setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+  }
+  
+  function closeModal() {
+    document.getElementById('adminModal').classList.remove('open');
+  }
+  
+  function checkPassword() {
+    const val = document.getElementById('passwordInput').value;
+    if (val === ADMIN_PASS) {
+      closeModal();
+      enableAdmin();
+    } else {
+      document.getElementById('modalError').classList.add('show');
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('passwordInput').focus();
+    }
+  }
+
+  function enableAdmin() {
+    isAdmin = true;
+    document.body.classList.add('admin-mode');
+    document.getElementById('adminBar').classList.add('visible');
+    document.getElementById('adminToggle').classList.add('active');
+    
+    document.querySelectorAll('.project-note').forEach(el => {
+      el.classList.remove('hidden-desc');
+      el.contentEditable = "true";
+    });
+
+    document.querySelectorAll('.project-title-text, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
+      el.contentEditable = "true";
+    });
+  }
+
+  function logout() {
+    isAdmin = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminBar').classList.remove('visible');
+    document.getElementById('adminToggle').classList.remove('active');
+    
+    document.querySelectorAll('.project-title-text, .project-note, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
+      el.contentEditable = "false";
+    });
+
+    filterDescriptions();
+    recalculateProjectNumbers();
+  }
+
+  // --- NEW MAGIC SAVE & DOWNLOAD WITH AUTO-SWAP ---
+  function saveAndDownload() {
+    logout();
+    
+    setTimeout(() => {
+      // Change temporary previews back to the real file names right before saving
+      document.querySelectorAll('img[data-permanent-src], video[data-permanent-src]').forEach(el => {
+        const realName = el.getAttribute('data-permanent-src');
+        el.setAttribute('src', realName);
+        el.removeAttribute('data-permanent-src'); 
+      });
+
+      const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "index.html"; 
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      enableAdmin(); // Turn admin back on after saving
+    }, 150);
+  }
+
+  function filterDescriptions() {
+    if(isAdmin) return;
+    document.querySelectorAll('.project-note').forEach(el => {
+      const txt = el.textContent.trim();
+      if(txt === "" || txt === "Add a short description of what you built or designed.") {
+        el.classList.add('hidden-desc');
+      } else {
+        el.classList.remove('hidden-desc');
+      }
+    });
+  }
+
+  function recalculateProjectNumbers() {
+    document.querySelectorAll('#projectsGrid .project-card').forEach((card, idx) => {
+      const numEl = card.querySelector('.project-num');
+      if (numEl) {
+        numEl.textContent = `Project ${String(idx + 1).padStart(2, '0')}`;
+      }
+    });
+  }
+
+  function openLightbox(cardElement) {
+    if (isAdmin) return; 
+    
+    const lContainer = document.getElementById('lightboxMediaContainer');
+    lContainer.innerHTML = '';
+    
+    const mediaItems = cardElement.querySelectorAll('.media-item-wrapper img, .media-item-wrapper video');
+    
+    mediaItems.forEach((item, index) => {
+      if (index > 0) {
+        const divider = document.createElement('div');
+        divider.className = 'lightbox-media-divider active';
+        lContainer.appendChild(divider);
+      }
+      
+      if (item.tagName.toLowerCase() === 'img') {
+        const img = document.createElement('img');
+        img.className = 'lightbox-img active';
+        img.src = item.src;
+        lContainer.appendChild(img);
+      } else if (item.tagName.toLowerCase() === 'video') {
+        const vid = document.createElement('video');
+        vid.className = 'lightbox-vid active';
+        vid.src = item.getAttribute('src');
+        vid.controls = true;
+        lContainer.appendChild(vid);
+      }
+    });
+    
+    const numText = cardElement.querySelector('.project-num').textContent;
+    const titleText = cardElement.querySelector('.project-title-text').textContent;
+    const descEl = cardElement.querySelector('.project-note');
+    
+    document.getElementById('lightboxNum').textContent = numText;
+    document.getElementById('lightboxTitle').textContent = titleText;
+    
+    const lDesc = document.getElementById('lightboxDesc');
+    if (descEl.classList.contains('hidden-desc') || descEl.textContent.trim() === "") {
+      lDesc.style.display = 'none';
+    } else {
+      lDesc.style.display = 'block';
+      lDesc.textContent = descEl.textContent;
+    }
+    
+    document.getElementById('projectLightbox').classList.add('open');
+  }
+
+  function closeLightbox() {
+    document.getElementById('projectLightbox').classList.remove('open');
+    document.querySelectorAll('#lightboxMediaContainer video').forEach(v => v.pause());
+  }
+
+  // --- NEW FILE PICKER SYSTEM ---
+  function promptForMedia(mediaId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*, video/*';
+    
+    input.onchange = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const exactFileName = file.name; 
+      const tempUrl = URL.createObjectURL(file); 
+
+      const mediaEl = document.getElementById(mediaId);
+      const listEl = mediaEl.querySelector('.project-media-list');
+      
+      const wrapper = document.createElement('div');
+      wrapper.className = 'media-item-wrapper';
+      
+      const isVideo = exactFileName.toLowerCase().endsWith('.mp4') || exactFileName.toLowerCase().endsWith('.webm');
+
+      if (isVideo) {
+        const vid = document.createElement('video');
+        vid.src = tempUrl; 
+        vid.setAttribute('data-permanent-src', exactFileName);
+        vid.muted = true;
+        vid.loop = true;
+        vid.playsInline = true;
+        vid.autoplay = true;
+        wrapper.appendChild(vid);
+      } else {
+        const img = document.createElement('img');
+        img.src = tempUrl; 
+        img.setAttribute('data-permanent-src', exactFileName);
+        wrapper.appendChild(img);
+      }
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-media-btn';
+      removeBtn.innerHTML = '✕';
+      removeBtn.onclick = function(ev) { removeSingleMedia(ev, this, mediaId); };
+      wrapper.appendChild(removeBtn);
+      
+      listEl.appendChild(wrapper);
+      mediaEl.classList.add('has-media');
+    };
+    
+    input.click();
+  }
+
+  function removeSingleMedia(e, btn, mediaId) {
+    e.stopPropagation();
+    const wrapper = btn.closest('.media-item-wrapper');
+    const mediaEl = document.getElementById(mediaId);
+    if (wrapper) {
+      wrapper.remove();
+    }
+    const listEl = mediaEl.querySelector('.project-media-list');
+    if (!listEl || listEl.children.length === 0) {
+      mediaEl.classList.remove('has-media');
+    }
+  }
+  
+  function clearMedia(e, mediaId) {
+    e.stopPropagation();
+    const mediaEl = document.getElementById(mediaId);
+    const listEl = mediaEl.querySelector('.project-media-list');
+    if (listEl) {
+      listEl.innerHTML = '';
+    }
+    mediaEl.classList.remove('has-media');
+  }
+
+  function moveItemUp(e, btn) {
+    e.stopPropagation();
+    e.preventDefault();
+    const currentCard = btn.closest('.skill-item, .project-card, .contact-row');
+    if (!currentCard) return;
+    
+    const previousCard = currentCard.previousElementSibling;
+    if (previousCard && (previousCard.classList.contains('skill-item') || previousCard.classList.contains('project-card') || previousCard.classList.contains('contact-row'))) {
+      currentCard.parentNode.insertBefore(currentCard, previousCard);
+      recalculateProjectNumbers();
+    }
+  }
+
+  function deleteItem(e, btn) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (confirm("Are you sure you want to permanently delete this item?")) {
+      const parent = btn.closest('.skill-item, .project-card, .contact-row');
+      if (parent) {
+        parent.remove();
+        recalculateProjectNumbers();
+      }
+    }
+  }
+
+  function addSkillSlot() {
+    const skillName = prompt("Enter Skill Name (e.g., Fusion 360):", "New Skill");
+    if(!skillName) return;
+    const levelPercentage = prompt("Enter progress level (0 to 100):", "75");
+    if(!levelPercentage) return;
+    const proficiencyStr = prompt("Enter Proficiency text (e.g., Expert):", "Advanced");
+    if(!proficiencyStr) return;
+    const specialtiesStr = prompt("Enter Specialized Fields / Parts of skill:", "Specialized in: Surface Modeling, Component Optimization");
+    if(!specialtiesStr) return;
+
+    const grid = document.getElementById('skillsGrid');
+    const item = document.createElement('div');
+    item.className = 'skill-item';
+    item.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="skill-main-row">
+        <div class="skill-name" contenteditable="${isAdmin}">${skillName}</div>
+        <div class="skill-track"><div class="skill-fill" style="width: ${levelPercentage}%"></div></div>
+        <div class="skill-level" contenteditable="${isAdmin}">${proficiencyStr}</div>
+      </div>
+      <div class="skill-specialties" contenteditable="${isAdmin}">${specialtiesStr}</div>
+    `;
+    grid.appendChild(item);
+  }
+
+  function addProjectSlot() {
+    // Generate a completely unique ID based on the exact timestamp 
+    // This stops projects from ever overlapping when you save and reload!
+    const uniqueId = Date.now();
+    const mid = 'media-' + uniqueId;
+    
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.setAttribute('onclick', 'openLightbox(this)');
+    card.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="project-media" id="${mid}">
+        <div class="media-empty-visitor">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3"/>
+            <path d="M6 26l8-7 6 5 4-4 10 8"/>
+            <circle cx="27" cy="17" r="3"/>
+          </svg>
+          <span>No project media uploaded</span>
+        </div>
+        <div class="project-media-list"></div>
+        <div class="upload-overlay" onclick="event.stopPropagation(); promptForMedia('${mid}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span class="upload-overlay-hint">Add Media Name</span>
+        </div>
+        <button class="clear-btn" onclick="clearMedia(event,'${mid}')">Clear All</button>
+      </div>
+      <div class="project-body">
+        <div class="project-num">Project Number</div>
+        <div class="project-title-text" contenteditable="${isAdmin}">Dynamic Project Title</div>
+        <div class="project-note hidden-desc" contenteditable="${isAdmin}"></div>
+      </div>`;
+      
+    document.getElementById('projectsGrid').appendChild(card);
+    filterDescriptions();
+    // This will automatically rename it "Project 05", "Project 06", etc. based on its order on the screen!
+    recalculateProjectNumbers(); 
+  }
+
+  function addSocialSlot() {
+    const platformLabel = prompt("Enter Social/Contact Platform Label Name (e.g., GitHub, Twitter):");
+    if(!platformLabel) return;
+    const platformValue = prompt("Enter Display Handle / Link Description text:");
+    if(!platformValue) return;
+    const linkUrl = prompt("Enter target web redirection destination URL:", "https://");
+    if(!linkUrl) return;
+
+    const container = document.getElementById('contactLinksGrid');
+    const element = document.createElement('a');
+    element.href = linkUrl;
+    element.target = "_blank";
+    element.className = "contact-row";
+    element.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="contact-row-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-row-label">${platformLabel}</div>
+        <div class="contact-row-value">${platformValue}</div>
+      </div>
+    `;
+    container.appendChild(element);
+  }
+
+  function addMobileSlot() {
+    const mobileLabel = prompt("Enter Mobile Label Name (e.g., Mobile, WhatsApp, Phone):", "Mobile");
+    if(!mobileLabel) return;
+    const mobileNumber = prompt("Enter Mobile Number (e.g., +8801717xxxxxx):");
+    if(!mobileNumber) return;
+
+    const container = document.getElementById('contactLinksGrid');
+    const element = document.createElement('a');
+    element.href = "tel:" + mobileNumber.replace(/\s+/g, '');
+    element.className = "contact-row";
+    element.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="contact-row-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-row-label">${mobileLabel}</div>
+        <div class="contact-row-value">${mobileNumber}</div>
+      </div>
+    `;
+    container.appendChild(element);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    filterDescriptions();
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.skill-fill').forEach(f => { f.style.width = f.dataset.width + '%'; });
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+
+  /* ===== CERTIFICATES ===== */
+
+  function recalculateCertNumbers() {
+    document.querySelectorAll('#certsGrid .cert-card').forEach((card, idx) => {
+      const el = card.querySelector('.cert-num');
+      if (el) el.textContent = `Cert ${String(idx + 1).padStart(2, '0')}`;
+    });
+  }
+
+  function addCertSlot() {
+    const title = prompt("Certificate Title:", "New Certificate");
+    if (!title) return;
+
+    const uid = 'cert-' + Date.now();
+    const card = document.createElement('div');
+    card.className = 'cert-card';
+    card.setAttribute('onclick', 'openCertLightbox(this)');
+    card.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateCertNumbers()">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this); recalculateCertNumbers()">Delete</button>
+      </div>
+      <div class="cert-thumb" id="${uid}">
+        <div class="cert-empty-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3" transform="scale(0.6) translate(5,5)"/>
+            <circle cx="12" cy="9" r="3.5"/><path d="M7 20l4-5 3 3.5 2.5-3 4.5 5.5" stroke-linejoin="round"/>
+          </svg>
+          <span>No photo</span>
+        </div>
+        <button class="cert-upload-btn" onclick="event.stopPropagation(); uploadCertFile('${uid}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Photo
+        </button>
+      </div>
+      <div class="cert-body">
+        <div class="cert-num">Cert</div>
+        <div class="cert-title" contenteditable="${isAdmin}">${title}</div>
+        <div class="cert-desc" contenteditable="${isAdmin}" data-placeholder="Add a short description…"></div>
+      </div>
+    `;
+    document.getElementById('certsGrid').appendChild(card);
+    recalculateCertNumbers();
+  }
+
+  function uploadCertFile(thumbId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function() {
+      const file = input.files[0];
+      if (!file) return;
+      const thumb = document.getElementById(thumbId);
+      const tempUrl = URL.createObjectURL(file);
+
+      // Clear previous image
+      const oldImg = thumb.querySelector('img.cert-img');
+      if (oldImg) oldImg.remove();
+      thumb.classList.remove('has-media');
+
+      const img = document.createElement('img');
+      img.className = 'cert-img';
+      img.src = tempUrl;
+      img.setAttribute('data-permanent-src', file.name);
+      thumb.insertBefore(img, thumb.querySelector('.cert-empty-icon'));
+      thumb.classList.add('has-media');
+    };
+    input.click();
+  }
+
+  function openCertLightbox(card) {
+    if (isAdmin) return;
+    const thumb = card.querySelector('.cert-thumb');
+    const title = card.querySelector('.cert-title').textContent;
+    const descEl = card.querySelector('.cert-desc');
+    const desc = descEl ? descEl.textContent.trim() : '';
+    const mediaDiv = document.getElementById('certLightboxMedia');
+    mediaDiv.innerHTML = '';
+
+    const img = thumb.querySelector('img.cert-img');
+    if (img) {
+      const lbImg = document.createElement('img');
+      lbImg.className = 'cert-lightbox-img';
+      lbImg.src = img.src;
+      mediaDiv.appendChild(lbImg);
+    }
+
+    document.getElementById('certLightboxTitle').textContent = title;
+    const lbDesc = document.getElementById('certLightboxDesc');
+    lbDesc.textContent = desc;
+    lbDesc.style.display = desc ? 'block' : 'none';
+    document.getElementById('certLightbox').classList.add('open');
+  }
+
+  function closeCertLightbox() {
+    document.getElementById('certLightbox').classList.remove('open');
+  }
+
+  document.getElementById('certLightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeCertLightbox();
+  });
+
+  window.openCertLightbox = openCertLightbox;
+  window.closeCertLightbox = closeCertLightbox;
+  window.uploadCertFile = uploadCertFile;
+  window.addCertSlot = addCertSlot;
+  window.recalculateCertNumbers = recalculateCertNumbers;
+
+  document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  document.getElementById('projectLightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+</script>
+
+</body></html>
