@@ -227,7 +227,9 @@
   .btn-logout:hover { background: rgba(0,0,0,0.15); }
 
   /* CONTAINER */
-  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
+  /* Keep non-project sections at original readable width */
+  .hero, #about, #skills, #certificates, #contact { max-width: 760px; }
 
   /* HERO */
   .hero { padding: 110px 0 80px; border-bottom: 1px solid var(--border); }
@@ -351,7 +353,8 @@
   }
 
   /* PROJECTS */
-  .projects-grid { display: flex; flex-direction: column; gap: 32px; }
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
   .project-card { 
     background: var(--card-bg); 
     border: 1px solid var(--border); 
@@ -372,7 +375,7 @@
 
   .project-media {
     width: 100%;
-    min-height: 240px;
+    min-height: 150px;
     background: rgba(1, 2, 5, 0.8);
     border-bottom: 1px solid var(--border);
     display: flex;
@@ -390,20 +393,20 @@
   /* MULTIPLE MEDIA GALLERY STYLING */
   .project-media-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 24px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 10px;
     width: 100%;
-    justify-content: center;
     align-items: center;
     z-index: 2;
-    max-height: 320px;
-    overflow-y: auto;
+    overflow: hidden;
   }
   .media-item-wrapper {
     position: relative;
-    width: 140px;
-    height: 100px;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 130px;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--border);
@@ -658,6 +661,184 @@
   .lightbox-title { font-size: 1.9rem; font-weight: 500; color: #fff; margin-bottom: 14px; }
   .lightbox-desc { font-size: 1.05rem; color: #cbd5e1; line-height: 1.8; }
 
+  /* CERTIFICATES */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .cert-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.15, 0.85, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  /* Odd cards slide right, even cards slide left — like project cards */
+  .cert-card:nth-child(odd):hover {
+    border-color: rgba(0, 242, 255, 0.8);
+    transform: translateX(4px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.7), 0 0 28px rgba(0,162,255,0.4), 0 0 55px rgba(123,0,255,0.2);
+  }
+  .cert-card:nth-child(even):hover {
+    border-color: rgba(0, 242, 255, 0.8);
+    transform: translateX(-4px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.7), 0 0 28px rgba(0,162,255,0.4), 0 0 55px rgba(123,0,255,0.2);
+  }
+
+  /* Thumb area — fixed height, shows PDF canvas or image */
+  .cert-thumb {
+    width: 100%;
+    height: 130px;
+    background: rgba(1,2,5,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cert-thumb img.cert-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cert-thumb .cert-empty-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: rgba(0,162,255,0.25);
+    font-size: 0.58rem;
+    transition: color 0.2s;
+  }
+  .cert-card:hover .cert-empty-icon { color: var(--accent); }
+  .cert-thumb.has-media .cert-empty-icon { display: none; }
+
+  .cert-upload-btn {
+    display: none;
+    position: absolute;
+    bottom: 5px; right: 5px;
+    background: rgba(3,7,18,0.88);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 5px;
+    padding: 3px 7px;
+    font-size: 0.65rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 15;
+    transition: all 0.2s;
+  }
+  .cert-upload-btn:hover { background: var(--accent); color: #000; }
+  body.admin-mode .cert-upload-btn { display: flex; align-items: center; gap: 4px; }
+
+  /* Card body — title + description like project cards */
+  .cert-body {
+    padding: 10px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+  }
+  .cert-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(0,242,255,0.3);
+  }
+  .cert-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cert-desc {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    display: none;
+  }
+  /* In admin, show description field with dashed border hint */
+  body.admin-mode .cert-desc {
+    display: block;
+    border-left: 2px dashed var(--accent);
+    padding-left: 6px;
+    margin-top: 4px;
+    min-height: 18px;
+  }
+
+  /* Cert lightbox */
+  .cert-lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(1,2,5,0.98);
+    backdrop-filter: blur(30px);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .cert-lightbox-overlay.open { display: flex; }
+  .cert-lightbox-content {
+    background: #02050f;
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,242,255,0.4);
+    display: flex;
+    flex-direction: column;
+  }
+  .cert-lightbox-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    z-index: 310;
+    transition: all 0.2s;
+  }
+  .cert-lightbox-close:hover { background: #fff; color: #000; font-weight: bold; box-shadow: 0 0 15px #fff; }
+  .cert-lightbox-img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    background: #000;
+    border-radius: 14px 14px 0 0;
+  }
+  .cert-lightbox-body { padding: 22px 28px 28px; }
+  .cert-lightbox-label { font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+  .cert-lightbox-title { font-size: 1.6rem; font-weight: 500; color: #fff; margin-bottom: 10px; }
+  .cert-lightbox-desc { font-size: 1rem; color: #cbd5e1; line-height: 1.75; }
+
   footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
 
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.15, 0.85, 0.3, 1), transform 0.8s cubic-bezier(0.15, 0.85, 0.3, 1); }
@@ -708,6 +889,7 @@
     <li><button class="nav-btn" onclick="goTo('about')">About</button></li>
     <li><button class="nav-btn" onclick="goTo('skills')">Skills</button></li>
     <li><button class="nav-btn" onclick="goTo('projects')">Projects</button></li>
+    <li><button class="nav-btn" onclick="goTo('certificates')">Certificates</button></li>
     <li><button class="nav-btn" onclick="goTo('contact')">Contact</button></li>
     <li><button class="admin-toggle" id="adminToggle" onclick="openModal()" title="Admin Switch"></button></li>
   </ul>
@@ -1046,6 +1228,62 @@
     </button>
   </section>
 
+<!-- CERTIFICATE LIGHTBOX -->
+<div class="cert-lightbox-overlay" id="certLightbox">
+  <div class="cert-lightbox-content">
+    <button class="cert-lightbox-close" onclick="closeCertLightbox()">✕</button>
+    <div id="certLightboxMedia"></div>
+    <div class="cert-lightbox-body">
+      <div class="cert-lightbox-label">Certificate</div>
+      <div class="cert-lightbox-title" id="certLightboxTitle">Certificate Title</div>
+      <p class="cert-lightbox-desc" id="certLightboxDesc"></p>
+    </div>
+  </div>
+</div>
+
+  <section class="section reveal visible" id="certificates">
+    <div class="section-label">Certificates</div>
+    <h2 class="section-title">My credentials</h2>
+
+    <div class="cert-grid" id="certsGrid">
+      <!-- Placeholder empty slot so admin can see the structure -->
+    <div class="cert-card" onclick="openCertLightbox(this)">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateCertNumbers()">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this); recalculateCertNumbers()">Delete</button>
+      </div>
+      <div class="cert-thumb has-media" id="cert-1779087388872">
+        <img class="cert-img" src="WhatsApp Image 2026-05-18 at 12.27.07 PM.jpeg"><div class="cert-empty-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3" transform="scale(0.6) translate(5,5)"></rect>
+            <circle cx="12" cy="9" r="3.5"></circle><path d="M7 20l4-5 3 3.5 2.5-3 4.5 5.5" stroke-linejoin="round"></path>
+          </svg>
+          <span>No photo</span>
+        </div>
+        <button class="cert-upload-btn" onclick="event.stopPropagation(); uploadCertFile('cert-1779087388872')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Upload Photo
+        </button>
+      </div>
+      <div class="cert-body">
+        <div class="cert-num">Cert 01</div>
+        <div class="cert-title" contenteditable="false">Calibration 2.0</div>
+        <div class="cert-desc" contenteditable="false" data-placeholder="Add a short description…">2nd Runner Up- CAD Segment</div>
+      </div>
+    </div></div>
+
+    <button class="admin-only-btn" onclick="addCertSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add certificate slot
+    </button>
+  </section>
+
   <section class="section reveal visible" id="contact">
     <div class="section-label">Contact</div>
     <h2 class="section-title">Get in touch</h2>
@@ -1180,7 +1418,7 @@
       el.contentEditable = "true";
     });
 
-    document.querySelectorAll('.project-title-text, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties').forEach(el => {
+    document.querySelectorAll('.project-title-text, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
       el.contentEditable = "true";
     });
   }
@@ -1191,7 +1429,7 @@
     document.getElementById('adminBar').classList.remove('visible');
     document.getElementById('adminToggle').classList.remove('active');
     
-    document.querySelectorAll('.project-title-text, .project-note, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties').forEach(el => {
+    document.querySelectorAll('.project-title-text, .project-note, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
       el.contentEditable = "false";
     });
 
@@ -1544,6 +1782,118 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(r => obs.observe(r));
+
+  /* ===== CERTIFICATES ===== */
+
+  function recalculateCertNumbers() {
+    document.querySelectorAll('#certsGrid .cert-card').forEach((card, idx) => {
+      const el = card.querySelector('.cert-num');
+      if (el) el.textContent = `Cert ${String(idx + 1).padStart(2, '0')}`;
+    });
+  }
+
+  function addCertSlot() {
+    const title = prompt("Certificate Title:", "New Certificate");
+    if (!title) return;
+
+    const uid = 'cert-' + Date.now();
+    const card = document.createElement('div');
+    card.className = 'cert-card';
+    card.setAttribute('onclick', 'openCertLightbox(this)');
+    card.innerHTML = `
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateCertNumbers()">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this); recalculateCertNumbers()">Delete</button>
+      </div>
+      <div class="cert-thumb" id="${uid}">
+        <div class="cert-empty-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="10" width="28" height="22" rx="3" transform="scale(0.6) translate(5,5)"/>
+            <circle cx="12" cy="9" r="3.5"/><path d="M7 20l4-5 3 3.5 2.5-3 4.5 5.5" stroke-linejoin="round"/>
+          </svg>
+          <span>No photo</span>
+        </div>
+        <button class="cert-upload-btn" onclick="event.stopPropagation(); uploadCertFile('${uid}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Photo
+        </button>
+      </div>
+      <div class="cert-body">
+        <div class="cert-num">Cert</div>
+        <div class="cert-title" contenteditable="${isAdmin}">${title}</div>
+        <div class="cert-desc" contenteditable="${isAdmin}" data-placeholder="Add a short description…"></div>
+      </div>
+    `;
+    document.getElementById('certsGrid').appendChild(card);
+    recalculateCertNumbers();
+  }
+
+  function uploadCertFile(thumbId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function() {
+      const file = input.files[0];
+      if (!file) return;
+      const thumb = document.getElementById(thumbId);
+      const tempUrl = URL.createObjectURL(file);
+
+      // Clear previous image
+      const oldImg = thumb.querySelector('img.cert-img');
+      if (oldImg) oldImg.remove();
+      thumb.classList.remove('has-media');
+
+      const img = document.createElement('img');
+      img.className = 'cert-img';
+      img.src = tempUrl;
+      img.setAttribute('data-permanent-src', file.name);
+      thumb.insertBefore(img, thumb.querySelector('.cert-empty-icon'));
+      thumb.classList.add('has-media');
+    };
+    input.click();
+  }
+
+  function openCertLightbox(card) {
+    if (isAdmin) return;
+    const thumb = card.querySelector('.cert-thumb');
+    const title = card.querySelector('.cert-title').textContent;
+    const descEl = card.querySelector('.cert-desc');
+    const desc = descEl ? descEl.textContent.trim() : '';
+    const mediaDiv = document.getElementById('certLightboxMedia');
+    mediaDiv.innerHTML = '';
+
+    const img = thumb.querySelector('img.cert-img');
+    if (img) {
+      const lbImg = document.createElement('img');
+      lbImg.className = 'cert-lightbox-img';
+      lbImg.src = img.src;
+      mediaDiv.appendChild(lbImg);
+    }
+
+    document.getElementById('certLightboxTitle').textContent = title;
+    const lbDesc = document.getElementById('certLightboxDesc');
+    lbDesc.textContent = desc;
+    lbDesc.style.display = desc ? 'block' : 'none';
+    document.getElementById('certLightbox').classList.add('open');
+  }
+
+  function closeCertLightbox() {
+    document.getElementById('certLightbox').classList.remove('open');
+  }
+
+  document.getElementById('certLightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeCertLightbox();
+  });
+
+  window.openCertLightbox = openCertLightbox;
+  window.closeCertLightbox = closeCertLightbox;
+  window.uploadCertFile = uploadCertFile;
+  window.addCertSlot = addCertSlot;
+  window.recalculateCertNumbers = recalculateCertNumbers;
 
   document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
   document.getElementById('projectLightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
