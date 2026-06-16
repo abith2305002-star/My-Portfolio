@@ -69,16 +69,39 @@
   nav {
     position: sticky;
     top: 0;
-    background: rgba(1, 3, 8, 0.8);
+    background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 162, 255, 0.25);
+    border-bottom: 1px solid rgba(0, 162, 255, 0.18);
     z-index: 50;
-    padding: 20px 40px;
+    padding: 2.5px 40px;
     display: flex;
-    justify-content: flex-end; 
+    justify-content: space-between; 
     align-items: center;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .nav-logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    background: linear-gradient(90deg, #00f2ff, #7b00ff, #00f2ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    cursor: pointer;
+    filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.5));
+    animation: logoShimmer 4s linear infinite;
+    transition: filter 0.2s;
+  }
+  @keyframes logoShimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  .nav-logo:hover {
+    filter: drop-shadow(0 0 14px rgba(0, 242, 255, 0.9)) drop-shadow(0 0 28px rgba(123, 0, 255, 0.6));
   }
   .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
   .nav-btn {
@@ -232,12 +255,43 @@
   .hero, #about, #skills, #certificates, #contact { max-width: 760px; }
 
   /* HERO */
-  .hero { padding: 110px 0 80px; border-bottom: 1px solid var(--border); }
-  .hero-greeting { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+  .hero {
+    padding: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s ease;
+    min-height: calc(100vh - 70px);
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+  }
+  .greeting-line {
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.6);
+  }
   
   .hero-name { 
     font-family: 'Times New Roman', Times, serif; 
-    font-size: clamp(2.5rem, 6vw, 4.5rem); 
+    font-size: clamp(3.2rem, 8vw, 6rem); 
     line-height: 1.1; 
     margin-bottom: 24px;
     white-space: nowrap; 
@@ -248,7 +302,45 @@
     letter-spacing: -0.01em;
     filter: drop-shadow(0 2px 20px rgba(0, 242, 255, 0.6)) drop-shadow(0 4px 40px rgba(123, 0, 255, 0.4));
   }
-  .hero-desc { font-size: 1.1rem; color: #cbd5e1; max-width: 560px; line-height: 1.8; }
+  .hero-desc { font-size: 1.1rem; color: #cbd5e1; max-width: 560px; line-height: 1.8; margin: 0 auto; }
+
+  .hero.scrolled {
+    border-bottom-color: var(--border);
+  }
+  /* SCROLL ARROW */
+  .scroll-arrow {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(148, 163, 184, 0.55);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.25s, filter 0.25s;
+    z-index: 6;
+  }
+  .scroll-arrow:hover {
+    filter: drop-shadow(0 0 6px rgba(100, 210, 255, 0.55));
+  }
+  /* wave: bright pulse travels from top to bottom repeatedly */
+  @keyframes arrowWave {
+    0%   { stroke-opacity: 0.08; }
+    45%  { stroke-opacity: 0.38; }
+    55%  { stroke-opacity: 0.38; }
+    100% { stroke-opacity: 0.08; }
+  }
+  .arrow-stem {
+    animation: arrowWave 2s ease-in-out infinite;
+  }
+  .arrow-head {
+    animation: arrowWave 2s ease-in-out infinite 0.25s;
+  }
+  .hero { position: relative; }
 
   /* SECTIONS */
   .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
@@ -843,6 +935,7 @@
   .cv-hero-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
     margin-top: 22px;
@@ -957,8 +1050,183 @@
   @media (max-width: 600px) {
     nav { padding: 14px 20px; }
     .nav-links { gap: 18px; }
-    .hero { padding: 70px 0 50px; }
+    .hero { padding: 90px 0 70px; min-height: calc(100vh - 70px); }
+    .hero-name { white-space: normal; }
     .lightbox-body { padding: 20px; }
+  }
+
+  /* ===== COMMENT SECTION ===== */
+  .comment-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+  }
+  .comment-input, .comment-textarea {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(2, 4, 12, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.95rem;
+    outline: none;
+    resize: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .comment-input:focus, .comment-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 14px rgba(0, 242, 255, 0.2);
+  }
+  .comment-input::placeholder, .comment-textarea::placeholder { color: #4a5568; }
+  .comment-actions-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .comment-submit-btn {
+    padding: 10px 22px;
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+    border: none;
+    border-radius: 7px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.87rem;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s, box-shadow 0.2s;
+  }
+  .comment-submit-btn:hover { opacity: 0.88; box-shadow: 0 0 18px rgba(0,242,255,0.45); }
+  .comment-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .comment-see-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--accent);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.87rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .comment-see-btn:hover { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,242,255,0.2); }
+  .comment-status {
+    font-size: 0.82rem;
+    min-height: 18px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .comment-status.error { color: #ff4d4d; }
+
+  /* Comments feed */
+  .comments-feed {
+    margin-top: 22px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(2, 4, 12, 0.6);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    max-width: 600px;
+    animation: feedSlideIn 0.28s cubic-bezier(0.15,0.85,0.3,1);
+  }
+  @keyframes feedSlideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .comments-feed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .comment-count-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(0,242,255,0.3);
+  }
+  .comments-feed-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    transition: color 0.2s;
+    padding: 0;
+  }
+  .comments-feed-close:hover { color: #fff; }
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .comments-list::-webkit-scrollbar { width: 4px; }
+  .comments-list::-webkit-scrollbar-track { background: transparent; }
+  .comments-list::-webkit-scrollbar-thumb { background: rgba(0,242,255,0.2); border-radius: 4px; }
+  .comments-loading {
+    padding: 28px 20px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .comment-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0,162,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: background 0.2s;
+  }
+  .comment-item:last-child { border-bottom: none; }
+  .comment-item:hover { background: rgba(0,242,255,0.03); }
+  .comment-item-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .comment-item-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .comment-item-time {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-left: auto;
+  }
+  .comment-item-email {
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .comment-item-email:hover { opacity: 1; text-decoration: underline; }
+  .comment-item-msg {
+    font-size: 0.93rem;
+    color: #cbd5e1;
+    line-height: 1.65;
+    word-break: break-word;
+  }
+  .no-comments-msg {
+    padding: 30px 20px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    text-align: center;
   }
 </style>
 </head>
@@ -1000,12 +1268,14 @@
 </div>
 
 <nav>
+  <a class="nav-logo" onclick="goTo('top')">AAA</a>
   <ul class="nav-links">
     <li><button class="nav-btn" onclick="goTo('about')">About</button></li>
     <li><button class="nav-btn" onclick="goTo('skills')">Skills</button></li>
     <li><button class="nav-btn" onclick="goTo('projects')">Projects</button></li>
     <li><button class="nav-btn" onclick="goTo('certificates')">Certificates</button></li>
     <li><button class="nav-btn" onclick="goTo('contact')">Contact</button></li>
+    <li><button class="nav-btn" onclick="goTo('comments')">Comments</button></li>
     <li><button class="admin-toggle" id="adminToggle" onclick="openModal()" title="Admin Switch"></button></li>
   </ul>
 </nav>
@@ -1013,7 +1283,7 @@
 <main class="container">
 
   <section class="hero" id="top">
-    <div class="hero-greeting">Portfolio</div>
+    <div class="hero-greeting"><span class="greeting-line"></span>Mechanical Engineer &amp; CAD Designer</div>
     <h1 class="hero-name" id="heroName">Adibul Ajraf Abith</h1>
     <p class="hero-desc" id="heroDesc" contenteditable="false">
       I'm a fast learner who loves picking up new things. What draws me to CAD is
@@ -1044,6 +1314,14 @@
         Remove
       </button>
     </div>
+    <a class="scroll-arrow" onclick="goTo('about')" title="Scroll to About">
+      <svg class="math-arrow-svg" width="20" height="32" viewBox="0 0 20 32" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <!-- vertical stem -->
+        <line class="arrow-stem" x1="10" y1="1" x2="10" y2="20" stroke="#7dd6f0" stroke-width="1.5"></line>
+        <!-- chevron: left point, bottom tip, right point — top points at y=20 same as stem end -->
+        <polyline class="arrow-head" points="3,20 10,29 17,20" stroke="#7dd6f0" stroke-width="1.5"></polyline>
+      </svg>
+    </a>
   </section>
 
   <section class="section reveal visible" id="about">
@@ -1071,19 +1349,30 @@
         <div class="skill-specialties" contenteditable="false">Specialized in: Part Modeling, Assembly, Sheet Metal, Weldments</div>
       </div>
       
-      <div class="skill-item">
-        <div class="admin-controls-cluster">
-          <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
-          <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
-        </div>
-        <div class="skill-main-row">
-          <div class="skill-name" contenteditable="false">AutoCAD</div>
-          <div class="skill-track"><div class="skill-fill" data-width="60" style="width: 60%;"></div></div>
-          <div class="skill-level" contenteditable="false">Medium</div>
-        </div>
-        <div class="skill-specialties" contenteditable="false">Specialized in: 2D Engineering Design</div>
+      
+    <div class="skill-item">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
       </div>
-    </div>
+      <div class="skill-main-row">
+        <div class="skill-name" contenteditable="false">Keyshot</div>
+        <div class="skill-track"><div class="skill-fill" style="width: 50%"></div></div>
+        <div class="skill-level" contenteditable="false">Intermideate</div>
+      </div>
+      <div class="skill-specialties" contenteditable="false">Specialized in: Rendering</div>
+    </div><div class="skill-item">
+      <div class="admin-controls-cluster">
+        <button class="move-up-btn" onclick="moveItemUp(event, this)">↑ Move Up</button>
+        <button class="delete-btn" onclick="deleteItem(event, this)">Delete</button>
+      </div>
+      <div class="skill-main-row">
+        <div class="skill-name" contenteditable="false">Autocad</div>
+        <div class="skill-track"><div class="skill-fill" style="width: 50%"></div></div>
+        <div class="skill-level" contenteditable="false">Intermideate</div>
+      </div>
+      <div class="skill-specialties" contenteditable="false">Specialized in: 2D Drawing</div>
+    </div></div>
 
     <button class="admin-only-btn" onclick="addSkillSlot()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -1619,6 +1908,37 @@
       </svg>
       Add mobile number slot
     </button>
+  </section>
+
+  <!-- COMMENTS SECTION -->
+  <section class="section reveal visible" id="comments">
+    <div class="section-label">Leave a Comment</div>
+    <h2 class="section-title">What do you think?</h2>
+
+    <div class="comment-box" id="commentBox">
+      <input class="comment-input" id="commenterName" type="text" placeholder="Your name" maxlength="60" autocomplete="off">
+      <input class="comment-input" id="commenterEmail" type="email" placeholder="Your email (optional)" maxlength="120" autocomplete="off">
+      <textarea class="comment-textarea" id="commenterMsg" placeholder="Write your comment here..." rows="4" maxlength="800"></textarea>
+      <div class="comment-actions-row">
+        <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Post Comment</button>
+        <button class="comment-see-btn" id="commentSeeBtn" onclick="toggleCommentsFeed()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          See Comments
+        </button>
+      </div>
+      <div class="comment-status" id="commentStatus"></div>
+    </div>
+
+    <!-- Comments feed drawer -->
+    <div class="comments-feed" id="commentsFeed" style="display:none;">
+      <div class="comments-feed-header">
+        <span id="commentCount" class="comment-count-badge">0 Comments</span>
+        <button class="comments-feed-close" onclick="toggleCommentsFeed()">✕ Close</button>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <div class="comments-loading" id="commentsLoading">Loading comments…</div>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -2222,8 +2542,173 @@
   window.addCertSlot = addCertSlot;
   window.recalculateCertNumbers = recalculateCertNumbers;
 
+  // Show hero border only after scrolling
+  window.addEventListener('scroll', function() {
+    const hero = document.querySelector('.hero');
+    if (window.scrollY > 10) {
+      hero.classList.add('scrolled');
+    } else {
+      hero.classList.remove('scrolled');
+    }
+  });
+
   document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
   document.getElementById('projectLightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+</script>
+
+<!-- ===== FIREBASE COMMENTS ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, push, onValue, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDqMa_xkg1Cslo2L3Io_VWPTrzIsaa-JUA",
+  authDomain: "portfolio2428.firebaseapp.com",
+  databaseURL: "https://portfolio2428-default-rtdb.firebaseio.com",
+  projectId: "portfolio2428",
+  storageBucket: "portfolio2428.firebasestorage.app",
+  messagingSenderId: "848976856123",
+  appId: "1:848976856123:web:334d6c3c1d8b7bb660881e",
+  measurementId: "G-Y7K4X3K1CB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  const firebaseConfig = {
+    apiKey:            "PASTE_YOUR_apiKey_HERE",
+    authDomain:        "PASTE_YOUR_authDomain_HERE",
+    databaseURL:       "PASTE_YOUR_databaseURL_HERE",   // ← required for Realtime DB
+    projectId:         "PASTE_YOUR_projectId_HERE",
+    storageBucket:     "PASTE_YOUR_storageBucket_HERE",
+    messagingSenderId: "PASTE_YOUR_messagingSenderId_HERE",
+    appId:             "PASTE_YOUR_appId_HERE"
+  };
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+  const commentsRef = ref(db, 'portfolioComments');
+
+  /* ── helpers ── */
+  function timeAgo(ts) {
+    const diff = (Date.now() - ts) / 1000;
+    if (diff < 60)   return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+    if (diff < 86400)return Math.floor(diff/3600) + ' hr ago';
+    return Math.floor(diff/86400) + ' day' + (Math.floor(diff/86400)>1?'s':'')+' ago';
+  }
+  function sanitize(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  /* ── submit ── */
+  window.submitComment = async function() {
+    const nameEl   = document.getElementById('commenterName');
+    const emailEl  = document.getElementById('commenterEmail');
+    const msgEl    = document.getElementById('commenterMsg');
+    const statusEl = document.getElementById('commentStatus');
+    const btn      = document.getElementById('commentSubmitBtn');
+
+    const name  = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const msg   = msgEl.value.trim();
+
+    if (!name) { statusEl.textContent = 'Please enter your name.'; statusEl.className='comment-status error'; return; }
+    if (!msg)  { statusEl.textContent = 'Comment cannot be empty.'; statusEl.className='comment-status error'; return; }
+
+    btn.disabled = true;
+    statusEl.textContent = 'Posting…';
+    statusEl.className = 'comment-status';
+
+    try {
+      const entry = { name, msg, ts: Date.now() };
+      if (email) entry.email = email;
+      await push(commentsRef, entry);
+      emailjs.send("service_6wi8gnf", "template_on46x8j", {
+     from_name:  name,
+     from_email: email || "not provided",
+     message:    msg
+   }, "wj2TelcdHXYLqX9Pu");
+      nameEl.value  = '';
+      emailEl.value = '';
+      msgEl.value   = '';
+      statusEl.textContent = '✓ Comment posted!';
+      statusEl.className = 'comment-status';
+      const feed = document.getElementById('commentsFeed');
+      if (feed.style.display === 'none') toggleCommentsFeed();
+      setTimeout(() => { statusEl.textContent = ''; }, 3500);
+    } catch(err) {
+      statusEl.textContent = 'Failed to post. Check Firebase config.';
+      statusEl.className = 'comment-status error';
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  /* ── toggle feed ── */
+  let feedLoaded = false;
+  window.toggleCommentsFeed = function() {
+    const feed = document.getElementById('commentsFeed');
+    const open = feed.style.display === 'none';
+    feed.style.display = open ? 'block' : 'none';
+    document.getElementById('commentSeeBtn').innerHTML = open
+      ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Hide Comments`
+      : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> See Comments`;
+    if (open && !feedLoaded) {
+      feedLoaded = true;
+      loadComments();
+    }
+  };
+
+  /* ── real-time listener ── */
+  function loadComments() {
+    const listEl    = document.getElementById('commentsList');
+    const countEl   = document.getElementById('commentCount');
+    const loadingEl = document.getElementById('commentsLoading');
+    const q = query(commentsRef, orderByChild('ts'));
+
+    onValue(q, (snapshot) => {
+      listEl.innerHTML = '';
+      const items = [];
+      snapshot.forEach(child => items.push(child.val()));
+      items.reverse(); // newest first
+
+      countEl.textContent = items.length + (items.length === 1 ? ' Comment' : ' Comments');
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<div class="no-comments-msg">No comments yet — be the first!</div>';
+        return;
+      }
+      items.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'comment-item';
+        const emailLine = c.email
+          ? `<a class="comment-item-email" href="mailto:${sanitize(c.email)}">${sanitize(c.email)}</a>`
+          : '';
+        div.innerHTML = `
+          <div class="comment-item-header">
+            <span class="comment-item-name">${sanitize(c.name)}</span>
+            ${emailLine}
+            <span class="comment-item-time">${timeAgo(c.ts)}</span>
+          </div>
+          <div class="comment-item-msg">${sanitize(c.msg)}</div>
+        `;
+        listEl.appendChild(div);
+      });
+    }, { onlyOnce: false });
+  }
 </script>
 
 </body></html>
