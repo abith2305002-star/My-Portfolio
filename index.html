@@ -1216,6 +1216,90 @@
     transition: opacity 0.2s;
   }
   .comment-item-email:hover { opacity: 1; text-decoration: underline; }
+
+  /* ===== ADMIN COMMENT PANEL ===== */
+  .admin-comment-panel {
+    display: none;
+    margin-top: 28px;
+    max-width: 660px;
+    border: 1px solid rgba(0,242,255,0.35);
+    border-radius: 12px;
+    background: rgba(0,10,20,0.75);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+  }
+  body.admin-mode .admin-comment-panel { display: block; }
+  .admin-comment-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(0,242,255,0.06);
+    border-bottom: 1px solid rgba(0,242,255,0.2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .admin-refresh-btn {
+    background: transparent;
+    border: 1px solid rgba(0,242,255,0.3);
+    border-radius: 6px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    transition: background 0.2s;
+  }
+  .admin-refresh-btn:hover { background: rgba(0,242,255,0.1); }
+  .admin-comments-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  .admin-comments-list::-webkit-scrollbar { width: 4px; }
+  .admin-comments-list::-webkit-scrollbar-thumb { background: rgba(0,242,255,0.2); border-radius: 4px; }
+  .admin-comment-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(0,242,255,0.08);
+    transition: background 0.2s;
+  }
+  .admin-comment-item:last-child { border-bottom: none; }
+  .admin-comment-item:hover { background: rgba(0,242,255,0.03); }
+  .admin-comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .admin-comment-name { font-size: 0.88rem; font-weight: 600; color: #fff; }
+  .admin-comment-email { font-size: 0.75rem; color: var(--accent); opacity: 0.75; }
+  .admin-comment-time { font-size: 0.73rem; color: var(--muted); margin-left: auto; }
+  .admin-comment-msg { font-size: 0.9rem; color: #94a3b8; line-height: 1.6; word-break: break-word; }
+  .admin-comment-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .admin-cmt-btn {
+    font-size: 0.73rem;
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    transition: opacity 0.2s;
+  }
+  .admin-cmt-btn:hover { opacity: 0.75; }
+  .admin-cmt-del { background: rgba(255,60,60,0.1); border-color: rgba(255,60,60,0.4); color: #ff6b6b; }
+  .admin-cmt-up  { background: rgba(0,242,255,0.07); border-color: rgba(0,242,255,0.3); color: var(--accent); }
+  .admin-cmt-dn  { background: rgba(0,242,255,0.07); border-color: rgba(0,242,255,0.3); color: var(--accent); }
   .comment-item-msg {
     font-size: 0.93rem;
     color: #cbd5e1;
@@ -1937,6 +2021,17 @@
       </div>
       <div class="comments-list" id="commentsList">
         <div class="comments-loading" id="commentsLoading">Loading comments…</div>
+      </div>
+    </div>
+
+    <!-- Admin-only comment manager -->
+    <div class="admin-comment-panel" id="adminCommentPanel">
+      <div class="admin-comment-panel-header">
+        <span>⚙ Comment Manager</span>
+        <button class="admin-refresh-btn" onclick="adminLoadComments()">↻ Refresh</button>
+      </div>
+      <div class="admin-comments-list" id="adminCommentsList">
+        <div class="comments-loading">Click Refresh to load all comments…</div>
       </div>
     </div>
   </section>
@@ -2705,6 +2800,76 @@
         listEl.appendChild(div);
       });
     }, { onlyOnce: false });
+  }
+
+  /* ── admin: load all comments with controls ── */
+  let _adminComments = []; // [{key, data}] ordered by ts
+
+  async function adminLoadComments() {
+    const listEl = document.getElementById('adminCommentsList');
+    listEl.innerHTML = '<div class="comments-loading">Loading…</div>';
+    const ok = await initFirebase();
+    if (!ok) { listEl.innerHTML = '<div class="comments-loading">Firebase not ready.</div>'; return; }
+
+    const { get, child, remove, set } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const snapshot = await get(_commentsRef);
+    _adminComments = [];
+    snapshot.forEach(child => _adminComments.push({ key: child.key, data: child.val() }));
+    _adminComments.sort((a,b) => a.data.ts - b.data.ts);
+    renderAdminComments();
+  }
+
+  function renderAdminComments() {
+    const listEl = document.getElementById('adminCommentsList');
+    listEl.innerHTML = '';
+    if (_adminComments.length === 0) {
+      listEl.innerHTML = '<div class="comments-loading">No comments yet.</div>';
+      return;
+    }
+    _adminComments.forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'admin-comment-item';
+      div.innerHTML = `
+        <div class="admin-comment-meta">
+          <span class="admin-comment-name">${sanitize(c.data.name)}</span>
+          ${c.data.email ? `<span class="admin-comment-email">${sanitize(c.data.email)}</span>` : ''}
+          <span class="admin-comment-time">${timeAgo(c.data.ts)}</span>
+        </div>
+        <div class="admin-comment-msg">${sanitize(c.data.msg)}</div>
+        <div class="admin-comment-controls">
+          ${i > 0 ? `<button class="admin-cmt-btn admin-cmt-up" onclick="adminMove(${i},-1)">↑ Move Up</button>` : ''}
+          ${i < _adminComments.length-1 ? `<button class="admin-cmt-btn admin-cmt-dn" onclick="adminMove(${i},1)">↓ Move Down</button>` : ''}
+          <button class="admin-cmt-btn admin-cmt-del" onclick="adminDelete('${c.key}',${i})">✕ Delete</button>
+        </div>
+      `;
+      listEl.appendChild(div);
+    });
+  }
+
+  async function adminDelete(key, idx) {
+    if (!confirm('Delete this comment? This cannot be undone.')) return;
+    const { remove, child } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const { ref: _ref } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const db = (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js")).getDatabase();
+    await remove(_ref(db, 'portfolioComments/' + key));
+    _adminComments.splice(idx, 1);
+    renderAdminComments();
+  }
+
+  async function adminMove(idx, dir) {
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= _adminComments.length) return;
+    // swap timestamps so order changes in Firebase
+    const tsA = _adminComments[idx].data.ts;
+    const tsB = _adminComments[swapIdx].data.ts;
+    const { ref: _ref, update } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const db = (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js")).getDatabase();
+    await update(_ref(db, 'portfolioComments/' + _adminComments[idx].key),    { ts: tsB });
+    await update(_ref(db, 'portfolioComments/' + _adminComments[swapIdx].key), { ts: tsA });
+    _adminComments[idx].data.ts    = tsB;
+    _adminComments[swapIdx].data.ts = tsA;
+    [_adminComments[idx], _adminComments[swapIdx]] = [_adminComments[swapIdx], _adminComments[idx]];
+    renderAdminComments();
   }
 </script>
 
