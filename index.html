@@ -252,7 +252,7 @@
   /* CONTAINER */
   .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
   /* Keep non-project sections at original readable width */
-  .hero, #about, #skills, #certificates, #contact { max-width: 760px; }
+  .hero, #about, #education, #skills, #certificates, #contact { max-width: 760px; }
 
   /* HERO */
   .hero {
@@ -443,6 +443,139 @@
     padding-left: 8px;
     margin-top: 4px;
   }
+
+  /* EDUCATION */
+  .education-list { display: flex; flex-direction: column; gap: 0; }
+
+  .edu-item {
+    position: relative;
+    padding: 0 0 40px 64px;
+    min-height: 1px;
+  }
+  .edu-item:last-child { padding-bottom: 8px; }
+  /* connecting line between nodes */
+  .edu-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 48px;
+    bottom: -8px;
+    width: 2px;
+    background: rgba(0, 242, 255, 0.25);
+  }
+  .edu-node {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: rgba(2, 4, 12, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    box-shadow: 0 0 16px rgba(0, 242, 255, 0.35);
+    flex-shrink: 0;
+  }
+  .edu-node svg { width: 22px; height: 22px; }
+
+  .edu-card {
+    position: relative;
+    padding: 4px 18px 16px 4px;
+    border-radius: 10px;
+  }
+  .edu-years {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    text-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+    display: inline-block;
+  }
+  .edu-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .edu-institution {
+    font-size: 0.98rem;
+    color: var(--accent);
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .edu-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .edu-desc {
+    font-size: 0.92rem;
+    color: #cbd5e1;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .edu-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid rgba(0, 242, 255, 0.4);
+    background: rgba(0, 242, 255, 0.08);
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+  .edu-pill.completed { color: var(--muted); border-color: var(--border); background: rgba(255,255,255,0.03); }
+
+  /* Fields hidden when empty for visitors; shown with dashed hint in admin mode */
+  .edu-meta, .edu-desc, .edu-pill {
+    display: none;
+  }
+  .edu-meta.has-content, .edu-desc.has-content { display: block; }
+  .edu-pill.has-content { display: inline-flex; }
+  body.admin-mode .edu-years,
+  body.admin-mode .edu-title,
+  body.admin-mode .edu-institution,
+  body.admin-mode .edu-meta,
+  body.admin-mode .edu-desc {
+    display: block;
+    border-left: 2px dashed var(--accent);
+    padding-left: 8px;
+    margin-top: 4px;
+    min-height: 1.4em;
+  }
+  body.admin-mode .edu-years { display: inline-block; }
+  body.admin-mode .edu-pill { display: inline-flex; }
+  body.admin-mode .edu-pill-text {
+    border-left: 2px dashed var(--accent);
+    padding-left: 6px;
+    min-width: 60px;
+    min-height: 1.2em;
+  }
+  body.admin-mode [contenteditable="true"]:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(148, 163, 184, 0.5);
+    font-style: italic;
+    pointer-events: none;
+  }
+
+  .edu-card .admin-controls-cluster { top: 0px; right: 4px; }
+
+  @media (max-width: 600px) {
+    .edu-item { padding-left: 52px; }
+    .edu-node { width: 40px; height: 40px; }
+    .edu-node svg { width: 18px; height: 18px; }
+    .edu-item:not(:last-child)::before { left: 19px; top: 42px; }
+  }
+
 
   /* PROJECTS */
   .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -1357,6 +1490,7 @@
   <a class="nav-logo" onclick="goTo('top')">AAA</a>
   <ul class="nav-links">
     <li><button class="nav-btn" onclick="goTo('about')">About</button></li>
+    <li><button class="nav-btn" onclick="goTo('education')">Education</button></li>
     <li><button class="nav-btn" onclick="goTo('skills')">Skills</button></li>
     <li><button class="nav-btn" onclick="goTo('projects')">Projects</button></li>
     <li><button class="nav-btn" onclick="goTo('certificates')">Certificates</button></li>
@@ -1415,6 +1549,67 @@
     <p id="aboutText" style="color:#cbd5e1; font-size:1.05rem; line-height:1.85; max-width:600px;" contenteditable="false">
       I'm currently a <span class="highlight">2nd year BSc Student at Khulna University of Engineering and Technology (KUET)</span> specializing in <span class="highlight">CAD &amp; 3D Mechanical Design</span>. I have a natural drive to design build and create innovative solutions<font color="#333132"><span style="caret-color: rgb(51, 49, 50);"> </span></font>.I enjoy shifting from conceptual thoughts to a fully realized, optimized 3D design. Being an adaptive, swift learner, I continuously advanced to more complex workflows and love pushing technical constraints.
     </p>
+  </section>
+
+  <section class="section reveal visible" id="education">
+    <div class="section-label">Education</div>
+    <h2 class="section-title">Academic career</h2>
+
+    <div class="education-list" id="educationGrid">
+      <div class="edu-item">
+        <div class="edu-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10L12 5 2 10l10 5 10-5z"></path>
+            <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path>
+          </svg>
+        </div>
+        <div class="edu-card">
+          <div class="admin-controls-cluster">
+            <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateProjectNumbers()">↑ Move Up</button>
+            <button class="delete-btn" onclick="deleteItem(event, this); recalculateProjectNumbers()">Delete</button>
+          </div>
+          <div class="edu-years" contenteditable="false">2023 — Present</div>
+          <div class="edu-title" contenteditable="false">B.Sc. in Mechanical Engineering</div>
+          <div class="edu-institution" contenteditable="false">Khulna University of Engineering &amp; Technology (KUET)</div>
+          <div class="edu-meta has-content" contenteditable="false" data-placeholder="e.g. City, Country · Status">Khulna, Bangladesh&nbsp; -&nbsp; Currently in 2nd Year</div>
+          <div class="edu-desc" contenteditable="false" data-placeholder="Add a short description of coursework or focus areas…"><br></div>
+          <div class="edu-pill has-content">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 9h18"></path></svg>
+            <span class="edu-pill-text" contenteditable="false" data-placeholder="e.g. Currently Enrolled">Currently Enrolled</span>
+          </div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <div class="edu-card">
+          <div class="admin-controls-cluster">
+            <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateProjectNumbers()">↑ Move Up</button>
+            <button class="delete-btn" onclick="deleteItem(event, this); recalculateProjectNumbers()">Delete</button>
+          </div>
+          <div class="edu-years" contenteditable="false">2021 — 2023</div>
+          <div class="edu-title" contenteditable="false">Higher Secondary Certificate (HSC)</div>
+          <div class="edu-institution" contenteditable="false">Chattogram Cantonment Public College</div>
+          <div class="edu-meta has-content" contenteditable="false" data-placeholder="e.g. Group · Country · Status">Science Group&nbsp; -&nbsp; Chattogram, Bangladesh</div>
+          <div class="edu-desc" contenteditable="false" data-placeholder="Add a short description of coursework or focus areas…"></div>
+          <div class="edu-pill completed has-content">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span class="edu-pill-text" contenteditable="false" data-placeholder="e.g. Completed">Completed &nbsp;·&nbsp; GPA 5.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="admin-only-btn" onclick="addEducationSlot()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="8" y1="2" x2="8" y2="14"></line><line x1="2" y1="8" x2="14" y2="8"></line>
+      </svg>
+      Add education slot
+    </button>
   </section>
 
   <section class="section reveal visible" id="skills">
@@ -2088,7 +2283,7 @@
       el.contentEditable = "true";
     });
 
-    document.querySelectorAll('.project-title-text, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
+    document.querySelectorAll('.project-title-text, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc, .edu-years, .edu-title, .edu-institution, .edu-meta, .edu-desc, .edu-pill-text').forEach(el => {
       el.contentEditable = "true";
     });
   }
@@ -2099,12 +2294,13 @@
     document.getElementById('adminBar').classList.remove('visible');
     document.getElementById('adminToggle').classList.remove('active');
     
-    document.querySelectorAll('.project-title-text, .project-note, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc').forEach(el => {
+    document.querySelectorAll('.project-title-text, .project-note, .hero-desc, #aboutText, .skill-name, .skill-level, .skill-specialties, .cert-title, .cert-desc, .edu-years, .edu-title, .edu-institution, .edu-meta, .edu-desc, .edu-pill-text').forEach(el => {
       el.contentEditable = "false";
     });
 
     filterDescriptions();
     filterCertDescs();
+    filterEducationFields();
     recalculateProjectNumbers();
   }
 
@@ -2365,11 +2561,11 @@
   function moveItemUp(e, btn) {
     e.stopPropagation();
     e.preventDefault();
-    const currentCard = btn.closest('.skill-item, .project-card, .contact-row');
+    const currentCard = btn.closest('.skill-item, .project-card, .contact-row, .edu-item');
     if (!currentCard) return;
     
     const previousCard = currentCard.previousElementSibling;
-    if (previousCard && (previousCard.classList.contains('skill-item') || previousCard.classList.contains('project-card') || previousCard.classList.contains('contact-row'))) {
+    if (previousCard && (previousCard.classList.contains('skill-item') || previousCard.classList.contains('project-card') || previousCard.classList.contains('contact-row') || previousCard.classList.contains('edu-item'))) {
       currentCard.parentNode.insertBefore(currentCard, previousCard);
       recalculateProjectNumbers();
     }
@@ -2379,7 +2575,7 @@
     e.stopPropagation();
     e.preventDefault();
     if (confirm("Are you sure you want to permanently delete this item?")) {
-      const parent = btn.closest('.skill-item, .project-card, .contact-row');
+      const parent = btn.closest('.skill-item, .project-card, .contact-row, .edu-item');
       if (parent) {
         parent.remove();
         recalculateProjectNumbers();
@@ -2529,9 +2725,21 @@
     });
   }
 
+  function filterEducationFields() {
+    document.querySelectorAll('.edu-meta, .edu-desc').forEach(el => {
+      el.classList.toggle('has-content', el.textContent.trim() !== '');
+    });
+    document.querySelectorAll('.edu-pill').forEach(el => {
+      const textEl = el.querySelector('.edu-pill-text');
+      const hasText = textEl && textEl.textContent.trim() !== '';
+      el.classList.toggle('has-content', hasText);
+    });
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     filterDescriptions();
     filterCertDescs();
+    filterEducationFields();
   });
 
   const reveals = document.querySelectorAll('.reveal');
@@ -2592,6 +2800,55 @@
     `;
     document.getElementById('certsGrid').appendChild(card);
     recalculateCertNumbers();
+  }
+
+  /* ===== EDUCATION ===== */
+
+  function addEducationSlot() {
+    const iconChoice = prompt("Icon for this entry — type \"cap\" for university/degree or \"book\" for school/college:", "cap");
+    if (iconChoice === null) return;
+    const useBook = iconChoice.trim().toLowerCase().startsWith('b');
+
+    const statusChoice = prompt("Pill style — type \"enrolled\" (currently studying) or \"completed\":", "enrolled");
+    if (statusChoice === null) return;
+    const isCompleted = statusChoice.trim().toLowerCase().startsWith('c');
+
+    const iconSvg = useBook
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10L12 5 2 10l10 5 10-5z"></path>
+          <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"></path>
+        </svg>`;
+
+    const pillIconSvg = isCompleted
+      ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg>`
+      : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 9h18"></path></svg>`;
+
+    const item = document.createElement('div');
+    item.className = 'edu-item';
+    item.innerHTML = `
+      <div class="edu-node">${iconSvg}</div>
+      <div class="edu-card">
+        <div class="admin-controls-cluster">
+          <button class="move-up-btn" onclick="moveItemUp(event, this); recalculateProjectNumbers()">↑ Move Up</button>
+          <button class="delete-btn" onclick="deleteItem(event, this); recalculateProjectNumbers()">Delete</button>
+        </div>
+        <div class="edu-years" contenteditable="${isAdmin}" data-placeholder="e.g. 2024 — Present"></div>
+        <div class="edu-title" contenteditable="${isAdmin}" data-placeholder="Degree / Certificate Title"></div>
+        <div class="edu-institution" contenteditable="${isAdmin}" data-placeholder="University / Institution Name"></div>
+        <div class="edu-meta" contenteditable="${isAdmin}" data-placeholder="e.g. City, Country · Status"></div>
+        <div class="edu-desc" contenteditable="${isAdmin}" data-placeholder="Add a short description of coursework or focus areas…"></div>
+        <div class="edu-pill${isCompleted ? ' completed' : ''}">
+          ${pillIconSvg}
+          <span class="edu-pill-text" contenteditable="${isAdmin}" data-placeholder="${isCompleted ? 'e.g. Completed' : 'e.g. Currently Enrolled'}"></span>
+        </div>
+      </div>
+    `;
+    document.getElementById('educationGrid').appendChild(item);
+    filterEducationFields();
   }
 
   function uploadCertFile(thumbId) {
